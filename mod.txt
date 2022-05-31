@@ -3,6 +3,7 @@
 	"description": "Trigger Pain events for Bhaptics Vest",
 	"author": "Janelle Pfeifer",
 	"version": "1.0",
+	"priority": 2,
 	"blt_version": 2,
 	"hooks": [
 		 { "hook_id" : "lib/managers/hud/hudteammate" 		, "script_path" : "mod.lua" }

@@ -1,34 +1,45 @@
+-- sound changes
+local ThisModPath = ModPath
+local snd_path = ThisModPath .. "assets/obi-wan-hello-there.ogg"
+
+if not io.file_is_readable(snd_path)then
+    log("painevent ERROR cannot find filepath " .. snd_path)
+end
+if blt.xaudio and io.file_is_readable(snd_path) then
+    blt.xaudio.setup()
+    log("painevent setup xAudio")
+else
+    return
+    log("painevent ERROR stopping mod !!!")
+end
 
 Hooks:PostHook(HUDPlayerCustody, "init", "init_pain_event", function(self, data, ...)
     dohttpreq("http://localhost:8001/event/level_load/", function(data2)
         log("painevent answer ".. data2)
     end)
-    blt.xaudio.setup()
-    log("painevent xaduio setup run")
 end)
 
+Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
+    managers.player:unregister_message(Nessage.OnPlayerDodge, "bla_pain_event")
+    managers.player:register_message(Message.OnPlayerDodge, "bla_pain_event", function()
+        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
+    end)
+    log("painevent registered Message that plays sound on dodge")
+end)
+
+Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
+    managers.player:unregister_message(Message.OnPlayerDodge, "bla_pain_event")
+end)
+
+
+
+-- events for haptic
 Hooks:PostHook(HUDTeammate, "set_armor", "set_armor_pain_event", function(self, data, ...)
     local Value = math.clamp(data.current / data.total, 0, 1)
     local real_value = math.round((data.total * 10) * Value)
     dohttpreq("http://localhost:8001/event/shield/"..real_value, function(data2)
         log("painevent set_armor ".. data2)
     end)
-    -- hitsounds play
-    local source
-    local snd_path = ModPath .. "assets/obi-wan-hello-there.ogg"
-    local volume = 1
-    log("painevent blaaaaaaaaaaaa xaduio before buffer creation filepath:" .. snd_path)
-    log("painevent unint source: " .. XAudio.PLAYER)
-    --source = XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path))
-    source = XAudio.Source:new(XAudio.Buffer:new(snd_path))
-    log("painevent xaduio succesfull source creation")
-    if source then
-        --source:set_volume(volume)
-        log("set_volume done")
-    end
-    log("painevent hoi")
-    --log("painevent done with audio source closed? " .. source:is_closed())
-
 end)
 
 Hooks:PostHook(HUDTeammate, "set_health", "set_health_pain_event", function(self, data, ...)
@@ -63,6 +74,8 @@ Hooks:PostHook(HUDPlayerCustody, "set_respawn_time", "set_respawn_time_pain_even
     end)
 end)
 
+
+-- evaluation data
 Hooks:PostHook(PlayerManager, "on_killshot", "on_killshot_pain_event", function(self, killed_unit, variant, headshot, weapon_id, ...)
     local player_unit = self:player_unit()
 
