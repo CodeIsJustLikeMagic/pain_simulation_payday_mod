@@ -17,10 +17,28 @@ end
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     log("painevent playerdamage init")
+
+    -- prepare hud element with the texture. hud made visble when player takes damage
+    local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    if not hud.panel:child("Pain_event_hit_visual_effect_hud_panel") then
+        local Pain_event_hit_visual_effect_hud_panel = hud.panel:bitmap({
+            name = "Pain_event_hit_visual_effect_hud_panel",
+            visible = false,
+            texture = "assets/textures/hello_there",
+            layer = 0,
+            color = Color("00ff80"),
+            blend_mode = "disable",
+            w = hud.panel:w(),
+            h = hud.panel:h(),
+            x = 0,
+            y = 0
+        })
+    end
+
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
     managers.player:register_message(Message.OnPlayerDodge, "onDodge_pain_event", function()
         log("painevent running my sound")
-        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
+        --XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
         log("painevent running my sound done")
     end)
 
@@ -28,6 +46,14 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
         log("painevent running my sound")
         XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path2)):set_volume(1)
+
+        local hud_panel = hud.panel:child("Pain_event_hit_visual_effect_hud_panel")
+        if hud_panel then
+            hud_panel:set_visible(true)
+            --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+            --hud_panel:animate(hudinfo.flash_icon, 4000000000)
+        end
+
         log("painevent running my sound done")
     end)
 
