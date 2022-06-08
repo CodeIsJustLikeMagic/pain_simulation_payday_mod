@@ -2,6 +2,7 @@
 local ThisModPath = ModPath
 local snd_path = ThisModPath .. "assets/duckquack.ogg"
 local snd_path2 = ThisModPath .. "assets/obi-wan-hello-there-adjusted.ogg"
+local ampule_effect_path = ThisModPath .. "assets/guis/textures/leech_ampule_effect.texture"
 
 if not io.file_is_readable(snd_path) then
     log("painevent ERROR cannot find filepath " .. snd_path)
@@ -14,6 +15,10 @@ else
     log("painevent ERROR stopping mod !!!")
 end
 
+if io.file_is_readable(ThisModPath .. "assets/guis/textures/hello_there.texture") then
+    log("painevent can find texture :)")
+end
+
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     log("painevent playerdamage init")
@@ -24,10 +29,11 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
         local Pain_event_hit_visual_effect_hud_panel = hud.panel:bitmap({
             name = "Pain_event_hit_visual_effect_hud_panel",
             visible = false,
-            texture = "assets/textures/hello_there",
+            texture = "assets/guis/textures/leech_ampule_effect",
             layer = 0,
             color = Color("00ff80"),
             blend_mode = "disable",
+
             w = hud.panel:w(),
             h = hud.panel:h(),
             x = 0,

@@ -1,0 +1,8 @@
+<mod name="Get Pain Events" author="Janelle Pfeifer" color="Color(0.4,0.7,1)" >
+	<AddFiles directory="assets">
+		<texture path="guis/textures/hello_there"/>
+		<texture path="guis/textures/leech_ampule_effect"/>
+		<texture path="guis/textures/leech_ampule_effect2"/>
+		<texture path="guis/textures/leech_ampule_effect_original"/>
+	</AddFiles>
+</mod>
