@@ -15,10 +15,11 @@ else
     log("painevent ERROR stopping mod !!!")
 end
 
-if io.file_is_readable(ThisModPath .. "assets/guis/textures/hello_there.texture") then
-    log("painevent can find texture :)")
+-- load texture files so game can find them later
+for _, file in pairs(file.GetFiles(ThisModPath.. "assets/guis/textures/")) do
+    DB:create_entry(Idstring("texture"), Idstring("assets/guis/textures/".. file:gsub(".texture", "")), ThisModPath.. "assets/guis/textures/".. file)
 end
-
+log("painevent successfully loaded texture files")
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     log("painevent playerdamage init")
@@ -29,7 +30,7 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
         local Pain_event_hit_visual_effect_hud_panel = hud.panel:bitmap({
             name = "Pain_event_hit_visual_effect_hud_panel",
             visible = false,
-            texture = "assets/guis/textures/leech_ampule_effect",
+            texture = "assets/guis/textures/hello_there",
             layer = 0,
             color = Color("00ff80"),
             blend_mode = "disable",
@@ -70,3 +71,5 @@ Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(se
     log("painevent playerdamage pre destroy")
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
 end)
+
+
