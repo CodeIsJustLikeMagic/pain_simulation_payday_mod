@@ -1,14 +1,20 @@
 -- sound changes
+
+if not PainEvent then
+    _G.PainEvent = {}
+    PainEvent.effect1_timer = 0
+    PainEvent.effect1_duration = 2
+
+end
+
 local ThisModPath = ModPath
 local duck_sound = ThisModPath .. "assets/duckquack.ogg"
-local hello_there_sound = ThisModPath .. "assets/obi-wan-hello-there-adjusted.ogg"
+local hello_there_sound = ThisModPath .. "assets/obi-wan-hello-there.ogg"
 
-local hitsounds_portal = ThisModPath .. "assets/sounds/output.ogg"
+local hitsounds_portal = ThisModPath .. "assets/sounds/obi-wan-hello-there.ogg"
 
 --effect1
 local effect1_path = "assets/guis/textures/leech_ampule_effect"
-local effect1_duration = 0.5
-local effect1_timer = 2
 
 if not io.file_is_readable(hitsounds_portal) then
     log("painevent ERROR cannot find filepath " .. hitsounds_portal)
@@ -57,8 +63,8 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
         log("painevent running on player damage registered message")
         XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(hitsounds_portal)):set_volume(1)
-        effect1_timer = effect1_duration
-        log("painevent effect timer is ", effect1_timer)
+        PainEvent.effect1_timer = PainEvent.effect1_duration
+        log("painevent effect timer is ", PainEvent.effect1_timer)
         --local hud_panel = hud.panel:child("Pain_event_hit_visual_effect_hud_panel")
         --if hud_panel then
             --hud_panel:set_visible(true)
@@ -71,18 +77,20 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
 end)
 
 local function Effect_update(t, dt)
-    log("painevent update")
+    log("painevent update effect1_timer is "..PainEvent.effect1_timer)
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     local effect_hud_panel = hud.panel:child("Pain_event_hit_visual_effect_hud_panel")
     if not effect_hud_panel then
+        log("painevent Error pain event effect panel not found")
         return
     end
 
-    if effect1_timer > 0 then
-        effect1_timer = effect1_timer - TimerManager:main():delta_time()
+    if PainEvent.effect1_timer > 0 then
+        log("painevent set visible delta time is"..TimerManager:main():delta_time())
+        PainEvent.effect1_timer = PainEvent.effect1_timer - TimerManager:main():delta_time()
         effect_hud_panel:set_visible(true)
-    elseif effect1_timer <=0 then
-        effect_hud_panel:stop()
+    elseif PainEvent.effect1_timer <=0 then
+        --effect_hud_panel:stop()
         effect_hud_panel:set_visible(false)
     end
 
