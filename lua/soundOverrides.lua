@@ -10,7 +10,7 @@ if not PainEvent then
     PainEvent.effect1_color = "000000"
     PainEvent.effect1_layer = 0
 
-    PainEvent.sound1_path = PainEvent._path .. "assets/sounds/squelsh hit__.ogg"
+    PainEvent.sound1_path = {PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"}
 
 end
 
@@ -62,8 +62,9 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
         log("painevent running on player damage registered message")
-        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.sound1_path)):set_volume(1)
+        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.sound1_path[math.random(#PainEvent.sound1_path)])):set_volume(1)
         PainEvent.effect1_timer = PainEvent.effect1_duration
+        
         log("painevent effect timer is ", PainEvent.effect1_timer)
     end)
 
