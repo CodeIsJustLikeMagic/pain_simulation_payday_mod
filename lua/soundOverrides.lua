@@ -10,7 +10,7 @@ if not PainEvent then
     PainEvent.effect1_color = "000000"
     PainEvent.effect1_layer = 0
 
-    PainEvent.sound1_path = PainEvent._path .. "assets/sounds/obi-wan-hello-there.ogg"
+    PainEvent.sound1_path = PainEvent._path .. "assets/sounds/squelsh hit__.ogg"
 
 end
 
