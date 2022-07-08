@@ -1,24 +1,85 @@
--- sound changes
+VisualEffect = {}
+VisualEffect.__index = VisualEffect
+
+function VisualEffect:new(names, duration, paths, color, layer)
+    local visef = {}
+    setmetatable(visef, VisualEffect)
+    visef.hudnames = names -- list of hudeffekt names
+    visef.duration = duration
+    visef.timers = { }
+    visef.paths = paths -- create a hud for each path
+    visef.color = color
+    visef.layer = layer
+
+    for i = 1, #visef.hudnames do
+        local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+        if not hud.panel:child(visef.hudnames[i]) then
+            local Pain_event_visual_effect_hud_panel = hud.panel:bitmap({
+                name = visef.hudnames[i],
+                visible = false,
+                texture = visef.paths[i],
+                layer = visef.layer,
+                color = Color(visef.color),
+                blend_mode = "disable",
+
+                w = hud.panel:w(),
+                h = hud.panel:h(),
+                x = 0,
+                y = 0
+            })
+        end
+        table.insert(visef.timers, 0)
+    end
+
+    return visef
+end
+
+function VisualEffect:startEffekt()
+    self.timers[math.random(#self.timers)] = self.duration
+end
+
+SoundEffect = {}
+SoundEffect.__index = SoundEffect
+
+function SoundEffect:new(paths)
+    local sndef = {}
+    setmetatable(sndef, SoundEffect)
+    sndef.soundpaths = paths
+    return sndef
+end
+
+function SoundEffect:getSoundPath()
+    return self.soundpaths[math.random(#self.soundpaths)]
+end
 
 if not PainEvent then
     _G.PainEvent = {}
     PainEvent._path = ModPath
-    PainEvent.effect1_hud_panel = "Pain_event_hit_visual_effect_hud_panel"
-    PainEvent.effect1_timer = 0
-    PainEvent.effect1_duration = 0.2
-    PainEvent.effect1_path = "assets/guis/textures/leech_ampule_effect"
-    PainEvent.effect1_color = "000000"
-    PainEvent.effect1_layer = 0
 
-    PainEvent.sound1_path = {PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"}
+    --for shielded hit
+    PainEvent.VisualEffectsShielded = {}
+    PainEvent.SoundEffectShielded = {}
+    --PainEvent.sound_path = {PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"}
 
+    --for unshielded hit
+
+    --for downed
 end
 
---local hitsounds_portal = ThisModPath .. "assets/sounds/obi-wan-hello-there.ogg"
+local function LoadProfile()
+    --load profile from a json file
+    v = VisualEffect:new({"hud1","hud2"}, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
+    table.insert(PainEvent.VisualEffectsShielded,v)
+    v = VisualEffect:new({"hud3","hud4"}, 0.5,{"assets/guis/textures/leech_end_cooldown_effect"},"FF0000",3)
+    table.insert(PainEvent.VisualEffectsShielded,v)
 
---if not io.file_is_readable(hitsounds_portal) then
---    log("painevent ERROR cannot find filepath " .. hitsounds_portal)
---end
+    s = SoundEffect:new({PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"})
+    table.insert(PainEvent.SoundEffectShielded,s)
+
+    --load unshielded
+
+    --load downed
+end
 
 if blt.xaudio then
     blt.xaudio.setup()
@@ -31,63 +92,56 @@ for _, file in pairs(file.GetFiles(PainEvent._path.. "assets/guis/textures/")) d
 end
 log("painevent successfully loaded texture files")
 
+
+
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     log("painevent playerdamage init")
 
+    --read profile json and run SetUpHudTexture for each texture read.
+    LoadProfile()
     -- prepare hud element with the texture. hud made visble when player takes damage
-    local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    if not hud.panel:child(PainEvent.effect1_hud_panel) then
-        local Pain_event_hit_visual_effect_hud_panel = hud.panel:bitmap({
-            name = PainEvent.effect1_hud_panel,
-            visible = false,
-            texture = PainEvent.effect1_path,
-            layer = PainEvent.effect1_layer,
-            color = Color(PainEvent.effect1_color),
-            blend_mode = "disable",
-
-            w = hud.panel:w(),
-            h = hud.panel:h(),
-            x = 0,
-            y = 0
-        })
-    end
 
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
     managers.player:register_message(Message.OnPlayerDodge, "onDodge_pain_event", function()
-        log("painevent running my sound")
         --XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
-        log("painevent running my sound done")
     end)
 
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
         log("painevent running on player damage registered message")
-        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.sound1_path[math.random(#PainEvent.sound1_path)])):set_volume(1)
-        PainEvent.effect1_timer = PainEvent.effect1_duration
-        
-        log("painevent effect timer is ", PainEvent.effect1_timer)
+
+        for i=1, #PainEvent.VisualEffectsShielded do
+            PainEvent.VisualEffectsShielded[i]:startEffekt()
+        end
+
+        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.SoundEffectShielded[1]:getSoundPath())):set_volume(1)
+
     end)
 
 end)
 
 local function Effect_update(t, dt)
-    log("painevent update effect1_timer is "..PainEvent.effect1_timer)
-    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    local effect_hud_panel = hud.panel:child(PainEvent.effect1_hud_panel)
-    if not effect_hud_panel then
-        log("painevent Error pain event effect panel not found")
-        return
-    end
 
-    if PainEvent.effect1_timer > 0 then
-        log("painevent set visible delta time is"..TimerManager:main():delta_time())
-        PainEvent.effect1_timer = PainEvent.effect1_timer - TimerManager:main():delta_time()
-        effect_hud_panel:set_visible(true)
-        local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
-        effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
-    elseif PainEvent.effect1_timer <=0 then
-        effect_hud_panel:stop()
-        effect_hud_panel:set_visible(false)
+    --for every hud update timer and make invisible if their duration ran out
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    for j = 1, #PainEvent.VisualEffectsShielded do
+        local visef = PainEvent.VisualEffectsShielded[j]
+
+        for i = 1, #visef.timers do
+            local panelname = visef.hudnames[i]
+            local effect_hud_panel = hud.panel:child(panelname)
+
+            if visef.timers[i] > 0 then
+                log("painevent set visible delta time is"..TimerManager:main():delta_time())
+                visef.timers[i] = visef.timers[i] - TimerManager:main():delta_time()
+                effect_hud_panel:set_visible(true)
+                local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+                effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
+            elseif visef.timers[i] <=0 then
+                effect_hud_panel:stop()
+                effect_hud_panel:set_visible(false)
+            end
+        end
     end
 
 end
@@ -102,4 +156,3 @@ if string.lower(RequiredScript) == "lib/managers/hudmanager" then
         Effect_update(t, dt)
     end)
 end
-
