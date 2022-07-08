@@ -41,10 +41,13 @@ if not PainEvent then
     PainEvent.SoundEffect = {}
 end
 
-v = VisualEffect:new({"hud1","hud2"}, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
-table.insert(PainEvent.VisualEffects,v)
-v = VisualEffect:new({"hud5","hud6"}, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
+local names = {}
+
+table.insert(names, "h")
+table.insert(names, "hoi")
+
+v = VisualEffect:new(names, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
 table.insert(PainEvent.VisualEffects,v)
 
-s = SoundEffect:new("assets/sounds/squelsh hit__.ogg", "assets/sounds/blup.ogg")
-print(#PainEvent.VisualEffects)
+
+

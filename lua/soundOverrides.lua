@@ -44,7 +44,10 @@ SoundEffect.__index = SoundEffect
 function SoundEffect:new(paths)
     local sndef = {}
     setmetatable(sndef, SoundEffect)
-    sndef.soundpaths = paths
+    sndef.soundpaths = {}
+    for i=1, #paths do
+        table.insert(sndef.soundpaths, PainEvent._path .. paths[i])
+    end
     return sndef
 end
 
@@ -68,13 +71,25 @@ end
 
 local function LoadProfile()
     --load profile from a json file
-    v = VisualEffect:new({"hud1","hud2"}, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
-    table.insert(PainEvent.VisualEffectsShielded,v)
-    v = VisualEffect:new({"hud3","hud4"}, 0.5,{"assets/guis/textures/leech_end_cooldown_effect"},"FF0000",3)
-    table.insert(PainEvent.VisualEffectsShielded,v)
 
-    s = SoundEffect:new({PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"})
-    table.insert(PainEvent.SoundEffectShielded,s)
+    local profileFile = io.open(PainEvent._path .. "Profile1.json","r")
+    local profile
+    if profileFile then
+        profileFile:close()
+
+        local visuals = profile.shield.visuals
+        log("painevent length of visuals: " .. #visuals)
+        for i=1, #visuals do
+            local effectdata = visuals[i]
+            local v = VisualEffect:new(effectdata.names, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer)
+            table.insert(PainEvent.VisualEffectsShielded,v)
+        end
+        local sounds = profile.shield.sounds
+        for i=1, #sounds do
+            local s = SoundEffect:new(sounds[i].paths)
+            table.insert(PainEvent.SoundEffectShielded,s)
+        end
+    end
 
     --load unshielded
 
