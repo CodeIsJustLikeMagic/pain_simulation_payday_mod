@@ -130,17 +130,35 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
 
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
-        log("painevent running on player damage registered message")
-
-        for i=1, #PainEvent.VisualEffectsShielded do
-            PainEvent.VisualEffectsShielded[i]:startEffekt()
-        end
-
-        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.SoundEffectsShielded[1]:getSoundPath())):set_volume(1)
 
     end)
 
 end)
+
+local function RunRoutine(visualEffects, soundEffects)
+    for i=1, #visualEffects do
+        visualEffects[i]:startEffekt()
+    end
+
+    for i=1, #soundEffects do
+        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(soundEffects[i]:getSoundPath())):set_volume(1)
+    end
+end
+
+function PlayerHitRoutineShielded()
+    log("painevent player hit routine shielded")
+    RunRoutine(PainEvent.VisualEffectsShielded, PainEvent.SoundEffectsShielded)
+end
+
+function PlayerHitRoutineUndShielded()
+    log("painevent player hit routine unshielded")
+    RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
+end
+
+function PlayerHitRoutineDowned()
+    log("painevent player hit routine downed")
+    RunRoutine(PainEvent.VisualEffectsDowned, PainEvent.SoundEffectsDowned)
+end
 
 local function Effect_update(t, dt)
 

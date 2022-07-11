@@ -1,7 +1,11 @@
 -- events for haptic
+
+
+
+
 Hooks:PostHook(HUDPlayerCustody, "init", "init_pain_event", function(self, data, ...)
     dohttpreq("http://localhost:8001/event/level_load/", function(data2)
-        log("painevent player Custody Init ".. data2)
+        log("painevent loading level ".. data2)
     end)
 end)
 
@@ -12,6 +16,7 @@ Hooks:PostHook(HUDTeammate, "set_armor", "set_armor_pain_event", function(self, 
     dohttpreq("http://localhost:8001/event/shield/"..real_value, function(data2)
         log("painevent set_armor ".. data2)
     end)
+    PlayerHitRoutineShielded()
 end)
 
 Hooks:PostHook(HUDTeammate, "set_health", "set_health_pain_event", function(self, data, ...)
@@ -20,6 +25,7 @@ Hooks:PostHook(HUDTeammate, "set_health", "set_health_pain_event", function(self
     dohttpreq("http://localhost:8001/event/health/"..real_value, function(data2)
         log("painevent set_health ".. data2)
     end)
+    PlayerHitRoutineShielded()
 end)
 
 Hooks:PostHook(HUDTeammate, "_damage_taken", "damage_taken_pain_event", function(self, ...)
