@@ -1,4 +1,4 @@
-{"shield": {
+{"shielded": {
     "visuals": [
       {
         "names": ["hud1", "hud2"],
@@ -29,10 +29,64 @@
       }
     ]
   }
-,"noshield": {
-  "visuals": [],
-  "sounds": []
+,"unshielded": {
+  "visuals": [
+    {
+      "names": ["hud1", "hud2"],
+      "duration": 0.2,
+      "paths": [
+        "assets/guis/textures/leech_ampule_effect",
+        "assets/guis/textures/hello_there"
+      ],
+      "color": "000000",
+      "layer": 2
+    },
+    {
+      "names": ["hud3"],
+      "duration": 0.5,
+      "paths": [
+        "assets/guis/textures/leech_end_cooldown_effect"
+      ],
+      "color": "FF0000",
+      "layer": 1
+    }
+  ],
+  "sounds": [
+    {
+      "paths": [
+        "assets/sounds/squelsh hit__.ogg",
+        "assets/sounds/blup.ogg"
+      ]
+    }
+  ]
 },"downed": {
-  "visuals": [],
-  "sounds": []
+  "visuals": [
+    {
+      "names": ["hud1", "hud2"],
+      "duration": 0.2,
+      "paths": [
+        "assets/guis/textures/leech_ampule_effect",
+        "assets/guis/textures/hello_there"
+      ],
+      "color": "000000",
+      "layer": 2
+    },
+    {
+      "names": ["hud3"],
+      "duration": 0.5,
+      "paths": [
+        "assets/guis/textures/leech_end_cooldown_effect"
+      ],
+      "color": "FF0000",
+      "layer": 1
+    }
+  ],
+  "sounds": [
+    {
+      "paths": [
+        "assets/sounds/squelsh hit__.ogg",
+        "assets/sounds/blup.ogg"
+      ]
+    }
+  ]
 }}

@@ -61,39 +61,46 @@ if not PainEvent then
 
     --for shielded hit
     PainEvent.VisualEffectsShielded = {}
-    PainEvent.SoundEffectShielded = {}
+    PainEvent.SoundEffectsShielded = {}
     --PainEvent.sound_path = {PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"}
 
     --for unshielded hit
+    PainEvent.VisualEffectsUnshielded = {}
+    PainEvent.SoundEffectsUnshielded = {}
 
     --for downed
+    PainEvent.VisualEffectsDowned = {}
+    PainEvent.SoundEffectsDowned = {}
 end
 
 local function LoadProfile()
-    --load profile from a json file
 
     local profileFile = io.open(PainEvent._path .. "Profile1.json","r")
     local profile
     if profileFile then
+
+        profile = json.decode(profileFile:read("*all"))
         profileFile:close()
 
-        local visuals = profile.shield.visuals
-        log("painevent length of visuals: " .. #visuals)
-        for i=1, #visuals do
-            local effectdata = visuals[i]
-            local v = VisualEffect:new(effectdata.names, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer)
-            table.insert(PainEvent.VisualEffectsShielded,v)
-        end
-        local sounds = profile.shield.sounds
-        for i=1, #sounds do
-            local s = SoundEffect:new(sounds[i].paths)
-            table.insert(PainEvent.SoundEffectShielded,s)
+        local EventVisualEffects = {PainEvent.VisualEffectsShielded, PainEvent.VisualEffectsUnshielded, PainEvent.VisualEffectsDowned}
+        local EventSoundEffects = {PainEvent.SoundEffectsShielded, PainEvent.SoundEffectsUnshielded, PainEvent.VisualEffectsDowned}
+        local eventprofile = {profile.shielded, profile.unshielded,profile.downed}
+
+        for event = 1, #eventprofile do
+            local visuals = eventprofile[event].visuals
+            log("painevent length of visuals: " .. #visuals)
+            for i=1, #visuals do
+                local effectdata = visuals[i]
+                local v = VisualEffect:new(effectdata.names, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer)
+                table.insert(EventVisualEffects[event],v)
+            end
+            local sounds = eventprofile[event].sounds
+            for i=1, #sounds do
+                local s = SoundEffect:new(sounds[i].paths)
+                table.insert(EventSoundEffects[event],s)
+            end
         end
     end
-
-    --load unshielded
-
-    --load downed
 end
 
 if blt.xaudio then
@@ -129,7 +136,7 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
             PainEvent.VisualEffectsShielded[i]:startEffekt()
         end
 
-        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.SoundEffectShielded[1]:getSoundPath())):set_volume(1)
+        XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(PainEvent.SoundEffectsShielded[1]:getSoundPath())):set_volume(1)
 
     end)
 
