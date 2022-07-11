@@ -83,10 +83,12 @@ local function LoadProfile()
         profileFile:close()
 
         local EventVisualEffects = {PainEvent.VisualEffectsShielded, PainEvent.VisualEffectsUnshielded, PainEvent.VisualEffectsDowned}
-        local EventSoundEffects = {PainEvent.SoundEffectsShielded, PainEvent.SoundEffectsUnshielded, PainEvent.VisualEffectsDowned}
+        local EventSoundEffects = {PainEvent.SoundEffectsShielded, PainEvent.SoundEffectsUnshielded, PainEvent.SoundEffectsDowned}
         local eventprofile = {profile.shielded, profile.unshielded,profile.downed}
 
         for event = 1, #eventprofile do
+
+            log("painevent loading event " .. event)
             local visuals = eventprofile[event].visuals
             log("painevent length of visuals: " .. #visuals)
             for i=1, #visuals do
@@ -95,6 +97,7 @@ local function LoadProfile()
                 table.insert(EventVisualEffects[event],v)
             end
             local sounds = eventprofile[event].sounds
+            log("painevent length of visuals: " .. #sounds)
             for i=1, #sounds do
                 local s = SoundEffect:new(sounds[i].paths)
                 table.insert(EventSoundEffects[event],s)
@@ -130,7 +133,16 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
 
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
-
+        log("painevent Message.OnPlayer Damage. Player hp is "..MyPlayer.hp.." armor is "..MyPlayer.armor)
+        if MyPlayer.armor <=0 then
+            if MyPlayer.hp <=0 then
+                PlayerHitRoutineDowned()
+            else
+                PlayerHitRoutineUnShielded()
+            end
+        else
+            PlayerHitRoutineShielded()
+        end
     end)
 
 end)
@@ -148,16 +160,25 @@ end
 function PlayerHitRoutineShielded()
     log("painevent player hit routine shielded")
     RunRoutine(PainEvent.VisualEffectsShielded, PainEvent.SoundEffectsShielded)
+    dohttpreq("http://localhost:8001/event/damage_shielded/", function(data2)
+        --log("painevent damage_taken ".. data2)
+    end)
 end
 
-function PlayerHitRoutineUndShielded()
+function PlayerHitRoutineUnShielded()
     log("painevent player hit routine unshielded")
     RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
+    dohttpreq("http://localhost:8001/event/damage_unshielded/", function(data2)
+        --log("painevent damage_taken ".. data2)
+    end)
 end
 
 function PlayerHitRoutineDowned()
     log("painevent player hit routine downed")
     RunRoutine(PainEvent.VisualEffectsDowned, PainEvent.SoundEffectsDowned)
+    dohttpreq("http://localhost:8001/event/damage_downed/", function(data2)
+        --log("painevent damage_taken ".. data2)
+    end)
 end
 
 local function Effect_update(t, dt)
