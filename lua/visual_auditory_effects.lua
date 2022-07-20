@@ -217,3 +217,7 @@ if string.lower(RequiredScript) == "lib/managers/hudmanager" then
         Effect_update(t, dt)
     end)
 end
+
+Hooks:PostHook(PlayerSound, "play", "play_pain_event", function(self, sound_name, source_name, sync)
+    log("painevent playersound "..sound_name)
+end)
