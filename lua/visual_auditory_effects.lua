@@ -71,6 +71,9 @@ if not PainEvent then
     --for downed
     PainEvent.VisualEffectsDowned = {}
     PainEvent.SoundEffectsDowned = {}
+
+    --
+    PainEvent.DisableDefaultHitDirection = true
 end
 
 local function LoadProfile()
@@ -245,4 +248,22 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
         end
 
     end
+end
+
+if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
+    function HUDHitDirection:_get_indicator_texture(damage_type)
+        if PainEvent.DisableDefaultHitDirection then
+            return "assets/guis/textures/nothing"
+        end
+        if managers.user:get_setting("color_blind_hit_direction") then
+            if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
+                return "guis/textures/pd2/hitdirection_bold"
+            elseif damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
+                return "guis/textures/pd2/hitdirection"
+            end
+        end
+
+        return "guis/textures/pd2/hitdirection"
+    end
+
 end
