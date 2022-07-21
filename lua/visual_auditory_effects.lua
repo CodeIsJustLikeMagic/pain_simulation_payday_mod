@@ -79,7 +79,7 @@ end
 
 local function LoadProfile()
 
-    local profileFile = io.open(PainEvent._path .. "Profile1.json","r")
+    local profileFile = io.open(PainEvent._path .. "Profile0.json","r")
     local profile
     if profileFile then
 
@@ -107,6 +107,19 @@ local function LoadProfile()
                 table.insert(EventSoundEffects[event],s)
             end
         end
+
+        if profile.disabledefaultsound == "false" then
+            PainEvent.DisableDefaultSound = false
+        else
+            PainEvent.DisableDefaultSound = true
+        end
+
+        if profile.disabledefaulthitdirection == "false" then
+            PainEvent.DisableDefaultHitDirection = false
+        else
+            PainEvent.DisableDefaultHitDirection = true
+        end
+
     end
 end
 
@@ -256,6 +269,7 @@ end
 
 if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     function HUDHitDirection:_get_indicator_texture(damage_type)
+        -- disable default hit direction arrow
         if PainEvent.DisableDefaultHitDirection then
             return "assets/guis/textures/nothing"
         end

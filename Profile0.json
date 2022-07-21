@@ -1,0 +1,11 @@
+{"shielded": {
+    "visuals": [    ],
+    "sounds": [    ]
+},"unshielded": {
+  "visuals": [  ],
+  "sounds": [  ]
+},"downed": {
+  "visuals": [  ],
+  "sounds": [  ]
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
+}
