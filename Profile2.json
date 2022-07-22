@@ -1,0 +1,58 @@
+{"shielded": {
+    "visuals": [
+      {
+        "duration": 0.5,
+        "paths": [
+          "assets/guis/textures/effectsdome edges",
+        ],
+        "color": "FFFFFF",
+        "layer": 1
+      }
+    ],
+    "sounds": [
+    ]
+  }
+,"unshielded": {
+  "visuals": [
+    {
+      "duration": 0.5,
+      "paths": [
+        "assets/guis/textures/effectsconcentrated edges"
+      ],
+      "color": "FF0000",
+      "layer": 1
+    },
+    {
+      "duration": 2,
+      "paths": [
+        "assets/guis/textures/effectsblurred blood splatter curtain"
+      ],
+      "color": "000000",
+      "layer": 2
+    }
+  ],
+  "sounds": [
+  ]
+},"downed": {
+  "visuals": [
+    {
+      "duration": 5,
+      "paths": [
+        "assets/guis/textures/effectsconcentrated edges"
+      ],
+      "color": "FFFFFF",
+      "layer": 1
+    },
+    {
+      "duration": 5,
+      "paths": [
+        "assets/guis/textures/effectsblurred blood splatter curtain"
+      ],
+      "color": "FFFFFF",
+      "layer": 2
+    }
+  ],
+  "sounds": [
+  ]
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
+}
