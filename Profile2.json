@@ -1,11 +1,11 @@
 {"shielded": {
     "visuals": [
       {
-        "duration": 0.5,
+        "duration": 0.3,
         "paths": [
-          "assets/guis/textures/effectsdome edges",
+          "assets/guis/textures/effectsdome edges"
         ],
-        "color": "FFFFFF",
+        "color": "98dcf0",
         "layer": 1
       }
     ],
@@ -17,18 +17,34 @@
     {
       "duration": 0.5,
       "paths": [
-        "assets/guis/textures/effectsconcentrated edges"
+        "assets/guis/textures/effectsblood splatter curtain"
       ],
-      "color": "FF0000",
-      "layer": 1
+      "color": "240100",
+      "layer": 4
     },
     {
-      "duration": 2,
+      "duration": 1,
       "paths": [
         "assets/guis/textures/effectsblurred blood splatter curtain"
       ],
-      "color": "000000",
+      "color": "240100",
+      "layer": 3
+    },
+    {
+      "duration": 1.5,
+      "paths": [
+        "assets/guis/textures/effectsblurry tex curtain"
+      ],
+      "color": "5f1000",
       "layer": 2
+    },
+    {
+      "duration": 0.3,
+      "paths": [
+        "assets/guis/textures/effectsconcentrated edges"
+      ],
+      "color": "5f1000",
+      "layer": 1
     }
   ],
   "sounds": [
@@ -38,18 +54,34 @@
     {
       "duration": 5,
       "paths": [
-        "assets/guis/textures/effectsconcentrated edges"
+        "assets/guis/textures/effectsblurred blood splatter circle"
       ],
-      "color": "FFFFFF",
-      "layer": 1
+      "color": "000000",
+      "layer": 4
     },
     {
       "duration": 5,
       "paths": [
-        "assets/guis/textures/effectsblurred blood splatter curtain"
+        "assets/guis/textures/effectsconcentrated edges"
       ],
-      "color": "FFFFFF",
+      "color": "000000",
+      "layer": 3
+    },
+    {
+      "duration": 5,
+      "paths": [
+        "assets/guis/textures/effectsfade edges"
+      ],
+      "color": "7e878f",
       "layer": 2
+    },
+    {
+      "duration": 5,
+      "paths": [
+        "assets/guis/textures/effectsfull screen 50"
+      ],
+      "color": "7e878f",
+      "layer": 1
     }
   ],
   "sounds": [

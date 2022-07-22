@@ -54,8 +54,8 @@ function VisualEffect:update(hud)
             self.timers[i] = self.timers[i] - TimerManager:main():delta_time()
             effect_hud_panel:set_visible(true)
 
-            local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
-            effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
+            --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+            --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
         elseif self.timers[i] <=0 then
             effect_hud_panel:stop()
             effect_hud_panel:set_visible(false)
@@ -178,6 +178,9 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
     managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
         log("painevent Message.OnPlayer Damage. Player hp is "..MyPlayer.hp.." armor is "..MyPlayer.armor)
+        if MyPlayer.hp == 0 and MyPlayer.armor == 0 then
+            PlayerHitRoutineDowned()
+        end
         --if PainEvent.damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
         --    PlayerHitRoutineUnShielded()
         --else if PainEvent.damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
