@@ -52,7 +52,7 @@
 },"downed": {
   "visuals": [
     {
-      "duration": 5,
+      "duration": 0,
       "paths": [
         "assets/guis/textures/effectsblurred blood splatter circle"
       ],
@@ -60,7 +60,7 @@
       "layer": 4
     },
     {
-      "duration": 5,
+      "duration": 0,
       "paths": [
         "assets/guis/textures/effectsconcentrated edges"
       ],
@@ -68,7 +68,7 @@
       "layer": 3
     },
     {
-      "duration": 5,
+      "duration": 0,
       "paths": [
         "assets/guis/textures/effectsfade edges"
       ],
@@ -76,7 +76,7 @@
       "layer": 2
     },
     {
-      "duration": 5,
+      "duration": 0,
       "paths": [
         "assets/guis/textures/effectsfull screen 50"
       ],

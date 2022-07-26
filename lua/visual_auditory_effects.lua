@@ -63,6 +63,24 @@ function VisualEffect:update(hud)
     end
 end
 
+function VisualEffect:setVisible(bool, hud)
+    for i = 1, #self.hudnames do
+        local panelname = self.hudnames[i]
+        local effect_hud_panel = hud.panel:child(panelname)
+        effect_hud_panel:set_visible(bool)
+
+        if bool then
+            log("painevent set "..panelname.." visible")
+            --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+            --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
+        else
+            effect_hud_panel:stop()
+            self.timers[i] = 0
+        end
+    end
+end
+
+
 SoundEffect = {}
 SoundEffect.__index = SoundEffect
 
@@ -189,6 +207,11 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
         --end
     end)
 
+    managers.player:unregister_message(Message.RevivePlayer, "RevivePlayer_pain_event")
+    managers.player:register_message(Message.RevivePlayer, "RevivePlayer_pain_event", function()
+        PlayerReviveRoutine()
+    end)
+
 end)
 
 local function RunRoutine(visualEffects, soundEffects)
@@ -221,11 +244,32 @@ function PlayerHitRoutineUnShielded()
 end
 
 function PlayerHitRoutineDowned()
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     log("painevent player hit routine downed")
-    RunRoutine(PainEvent.VisualEffectsDowned, PainEvent.SoundEffectsDowned)
+    for i=1, #PainEvent.VisualEffectsDowned do
+        log("painevent startEffect "..i)
+        PainEvent.VisualEffectsDowned[i]:setVisible(true,hud)
+    end
+    for i=1, #PainEvent.VisualEffectsUnshielded do
+        log("painevent startEffect "..i)
+        PainEvent.VisualEffectsUnshielded[i]:setVisible(false,hud)
+    end
+    for i=1, #PainEvent.VisualEffectsShielded do
+        log("painevent startEffect "..i)
+        PainEvent.VisualEffectsShielded[i]:setVisible(false,hud)
+    end
     --dohttpreq("http://localhost:8001/event/damage_downed/", function(data2)
         --log("painevent damage_taken ".. data2)
     --end)
+end
+
+function PlayerReviveRoutine()
+    log("painevent player revive")
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    for i=1, #PainEvent.VisualEffectsDowned do
+        log("painevent startEffect "..i)
+        PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
+    end
 end
 
 local function Effect_update(t, dt)
@@ -237,9 +281,6 @@ local function Effect_update(t, dt)
     end
     for j = 1, #PainEvent.VisualEffectsUnshielded do
         PainEvent.VisualEffectsUnshielded[j]:update(hud)
-    end
-    for j = 1, #PainEvent.VisualEffectsDowned do
-        PainEvent.VisualEffectsDowned[j]:update(hud)
     end
 
 end
