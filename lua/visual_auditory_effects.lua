@@ -193,7 +193,7 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
         --XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
     end)
 
-    managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
+    Evaluation:levelLoad()
 
 end)
 
@@ -275,6 +275,7 @@ local function Effect_update(t, dt)
 end
 
 Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
+    Evaluation:levelQuit()
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
 end)
 

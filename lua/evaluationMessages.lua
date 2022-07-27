@@ -38,3 +38,13 @@ function Evaluation:revived()
     dohttpreq("http://localhost:8001/evaluate/revived/", function(data2)
     end)
 end
+
+function Evaluation:levelLoad()
+    dohttpreq("http://localhost:8001/evaluate/levelload/", function(data2)
+    end)
+end
+
+function Evaluation:levelQuit()
+    dohttpreq("http://localhost:8001/evaluate/levelquit/", function(data2)
+    end)
+end
