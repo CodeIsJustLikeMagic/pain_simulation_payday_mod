@@ -223,6 +223,7 @@ function PlayerHitRoutineShielded()
     --dohttpreq("http://localhost:8001/event/damage_shielded/", function(data2)
         --log("painevent damage_taken ".. data2)
     --end)
+    Evaluation:shieldedHit()
 end
 
 function PlayerHitRoutineUnShielded()
@@ -231,6 +232,7 @@ function PlayerHitRoutineUnShielded()
     --dohttpreq("http://localhost:8001/event/damage_unshielded/", function(data2)
         --log("painevent damage_taken ".. data2)
     --end)
+    Evaluation:unshieldedHit()
 end
 
 function PlayerHitRoutineDowned()
@@ -248,6 +250,7 @@ function PlayerHitRoutineDowned()
     --dohttpreq("http://localhost:8001/event/damage_downed/", function(data2)
         --log("painevent damage_taken ".. data2)
     --end)
+    Evaluation:downed()
 end
 
 function PlayerReviveRoutine()
@@ -256,6 +259,7 @@ function PlayerReviveRoutine()
     for i=1, #PainEvent.VisualEffectsDowned do
         PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
     end
+    Evaluation:revived()
 end
 
 local function Effect_update(t, dt)
@@ -268,7 +272,6 @@ local function Effect_update(t, dt)
     for j = 1, #PainEvent.VisualEffectsUnshielded do
         PainEvent.VisualEffectsUnshielded[j]:update(hud)
     end
-
 end
 
 Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
