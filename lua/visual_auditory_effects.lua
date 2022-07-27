@@ -70,7 +70,7 @@ function VisualEffect:setVisible(bool, hud)
         effect_hud_panel:set_visible(bool)
 
         if bool then
-            log("painevent set "..panelname.." visible")
+            --log("painevent set "..panelname.." visible")
             --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
             --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
         else
@@ -182,7 +182,7 @@ end
 
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
-    log("painevent playerdamage init")
+    --log("painevent playerdamage init")
 
     --read profile json and run SetUpHudTexture for each texture read.
     LoadProfile()
@@ -194,30 +194,21 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     end)
 
     managers.player:unregister_message(Message.OnPlayerDamage, "onDamage_pain_event")
-    managers.player:register_message(Message.OnPlayerDamage, "onDamage_pain_event", function()
-        log("painevent Message.OnPlayer Damage. Player hp is "..MyPlayer.hp.." armor is "..MyPlayer.armor)
-        if MyPlayer.hp == 0 and MyPlayer.armor == 0 then
-            PlayerHitRoutineDowned()
-        end
-        --if PainEvent.damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
-        --    PlayerHitRoutineUnShielded()
-        --else if PainEvent.damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
-        --    PlayerHitRoutineShielded()
-        --    end
-        --end
-    end)
 
-    managers.player:unregister_message(Message.RevivePlayer, "RevivePlayer_pain_event")
-    managers.player:register_message(Message.RevivePlayer, "RevivePlayer_pain_event", function()
-        PlayerReviveRoutine()
-    end)
+end)
 
+Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
+    PlayerHitRoutineDowned()
+end)
+
+Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
+    PlayerReviveRoutine()
 end)
 
 local function RunRoutine(visualEffects, soundEffects)
 
     for i=1, #visualEffects do
-        log("painevent startEffect "..i)
+        --log("painevent startEffect "..i)
         visualEffects[i]:startEffekt()
     end
 
@@ -236,7 +227,6 @@ end
 
 function PlayerHitRoutineUnShielded()
     log("painevent player hit routine unshielded")
-    log("painevent unshielded visual effects: "..#PainEvent.VisualEffectsUnshielded)
     RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
     --dohttpreq("http://localhost:8001/event/damage_unshielded/", function(data2)
         --log("painevent damage_taken ".. data2)
@@ -247,15 +237,12 @@ function PlayerHitRoutineDowned()
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     log("painevent player hit routine downed")
     for i=1, #PainEvent.VisualEffectsDowned do
-        log("painevent startEffect "..i)
         PainEvent.VisualEffectsDowned[i]:setVisible(true,hud)
     end
     for i=1, #PainEvent.VisualEffectsUnshielded do
-        log("painevent startEffect "..i)
         PainEvent.VisualEffectsUnshielded[i]:setVisible(false,hud)
     end
     for i=1, #PainEvent.VisualEffectsShielded do
-        log("painevent startEffect "..i)
         PainEvent.VisualEffectsShielded[i]:setVisible(false,hud)
     end
     --dohttpreq("http://localhost:8001/event/damage_downed/", function(data2)
@@ -267,7 +254,6 @@ function PlayerReviveRoutine()
     log("painevent player revive")
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     for i=1, #PainEvent.VisualEffectsDowned do
-        log("painevent startEffect "..i)
         PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
     end
 end
