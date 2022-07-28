@@ -119,7 +119,6 @@ if not PainEvent then
     PainEvent.DisableDefaultHitDirection = true
     PainEvent.DisableDefaultSound = true
 
-    PainEvent.damage_type = HUDHitDirection.DAMAGE_TYPES.ARMOUR
 end
 
 local function LoadProfile()
@@ -194,15 +193,58 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     end)
 
     Evaluation:levelLoad()
-
+    -- runs at level load
 end)
 
 Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
     PlayerHitRoutineDowned()
+    Evaluation:hpAndArmor()
+    -- runs when player is downed (0 hp and 0 armor)
 end)
 
 Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
     PlayerReviveRoutine()
+    log("painevent player revived by ally")
+    dohttpreq("http://localhost:8001/evaluate/revive", function(data2)
+    end)
+    Evaluation:hpAndArmor()
+    -- runs when player is helped after being downed
+end)
+
+Hooks:PostHook(PlayerDamage, "restore_health","restore_health_pain_event", function(self)
+    log("painevent replenish")
+    dohttpreq("http://localhost:8001/evaluate/restore_hp/", function(data2)
+    end)
+    Evaluation:hpAndArmor()
+    -- this runs after armor regenerateArmor a few times
+end)
+
+Hooks:PostHook(PlayerDamage, "recover_health","recover_health_event", function(self)
+    log("painevent doctor bag used")
+    dohttpreq("http://localhost:8001/evaluate/doctor_bag_used/", function(data2)
+    end)
+    Evaluation:hpAndArmor()
+    -- runs when doctor bag is used
+end)
+
+Hooks:PostHook(PlayerDamage, "set_armor","set_armor_playerdamage_pain_event", function(self)
+    log("painevent set_armor")
+
+    Evaluation:hpAndArmor()
+    -- runs anytime armor is set, armor goes up over a few calls
+end)
+
+Hooks:PostHook(PlayerDamage, "set_health","set_armor_playerdamage_pain_event", function(self)
+    log("painevent set_armor")
+    Evaluation:hpAndArmor()
+    -- runs anytime hp is set
+end)
+
+Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
+    log("_regenerate_armor")
+    Evaluation:regenerateArmor()
+
+    -- armor regenerating itself after not being attacked for a few seconds
 end)
 
 local function RunRoutine(visualEffects, soundEffects)
@@ -220,18 +262,12 @@ end
 function PlayerHitRoutineShielded()
     log("painevent player hit routine shielded")
     RunRoutine(PainEvent.VisualEffectsShielded, PainEvent.SoundEffectsShielded)
-    --dohttpreq("http://localhost:8001/event/damage_shielded/", function(data2)
-        --log("painevent damage_taken ".. data2)
-    --end)
     Evaluation:shieldedHit()
 end
 
 function PlayerHitRoutineUnShielded()
     log("painevent player hit routine unshielded")
     RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
-    --dohttpreq("http://localhost:8001/event/damage_unshielded/", function(data2)
-        --log("painevent damage_taken ".. data2)
-    --end)
     Evaluation:unshieldedHit()
 end
 
@@ -247,14 +283,10 @@ function PlayerHitRoutineDowned()
     for i=1, #PainEvent.VisualEffectsShielded do
         PainEvent.VisualEffectsShielded[i]:setVisible(false,hud)
     end
-    --dohttpreq("http://localhost:8001/event/damage_downed/", function(data2)
-        --log("painevent damage_taken ".. data2)
-    --end)
     Evaluation:downed()
 end
 
 function PlayerReviveRoutine()
-    log("painevent player revive")
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     for i=1, #PainEvent.VisualEffectsDowned do
         PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
@@ -277,12 +309,14 @@ end
 Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
     Evaluation:levelQuit()
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
+    -- runs just before level is quit
 end)
 
 if string.lower(RequiredScript) == "lib/managers/hudmanager" then
     Hooks:PostHook(HUDManager, "update", "update_pain_event", function(self, t, dt)
         Effect_update(t, dt)
     end)
+    -- runs on every game update
 end
 
 --replace whole function. needs required script so PlayerSound isnt a nil value
@@ -315,12 +349,14 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
         return event
 
     end
+    -- runs when sound is played for player
 end
+
 
 if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     function HUDHitDirection:_get_indicator_texture(damage_type)
+        Evaluation:hpAndArmor()
         log("painevent get indicator texture upon getting hit")
-        PainEvent.damage_type = damage_type
 
         --run our visual effects
         if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
@@ -344,5 +380,5 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
 
         return "guis/textures/pd2/hitdirection"
     end
-
+    -- runs when player gets damaged
 end

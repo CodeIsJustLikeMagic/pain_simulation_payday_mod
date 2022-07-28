@@ -36,18 +36,6 @@ Hooks:PostHook(HUDTeammate, "set_health", "set_health_pain_event", function(self
     MyPlayer.hp = real_value
 end)
 
-Hooks:PostHook(HUDTeammate, "_damage_taken", "damage_taken_pain_event", function(self, ...)
-    --dohttpreq("http://localhost:8001/event/damage_taken/", function(data2)
-        --log("painevent damage_taken ".. data2)
-    --end)
-    --log("painevent hud teammate damage taken")
-end)
-
-Hooks:PostHook(HUDPlayerDowned, "on_downed", "on_downed_pain_event", function(self, ...)
-    --dohttpreq("http://localhost:8001/event/downed/", function(data2)
-        --log("painevent on_downed ".. data2)
-    --end)
-end)
 
 Hooks:PostHook(HUDPlayerDowned, "on_arrested", "on_arrested_pain_event", function(self, ...)
     --dohttpreq("http://localhost:8001/event/arrested/", function(data2)

@@ -10,6 +10,7 @@
 		 { "hook_id" : "lib/managers/hud/HUDPlayerDowned" 		, "script_path" : "lua/hapticMessages.lua" }
 		 { "hook_id" : "lib/managers/hud/HUDPlayerCustody" 		, "script_path" : "lua/hapticMessages.lua" }
 		 { "hook_id" : "lib/managers/Playermanager" 		, "script_path" : "lua/evaluationMessages.lua" }
+		 { "hook_id" : "lib/units/equipment/doctor_bag/doctorbagbase.lua" 		, "script_path" : "lua/evaluationMessages.lua" }
 		 {"hook_id": "lib/units/beings/player/playerdamage", "script_path" : "lua/visual_auditory_effects.lua"}
 		 { "hook_id": "lib/managers/hudmanager" , "script_path" : "lua/visual_auditory_effects.lua"}
 		 { "hook_id": "lib/units/beings/player/playersound" , "script_path" : "lua/visual_auditory_effects.lua"}

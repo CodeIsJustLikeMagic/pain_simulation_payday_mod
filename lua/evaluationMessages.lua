@@ -15,36 +15,47 @@ Hooks:PostHook(PlayerManager, "on_killshot", "on_killshot_pain_event", function(
         return
     end
 
-    dohttpreq("http://localhost:8001/evaluate/killshot/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/killshot", function(data2)
     end)
 end)
 
 function Evaluation:unshieldedHit()
-    dohttpreq("http://localhost:8001/evaluate/unshielded/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/unshielded", function(data2)
     end)
 end
 
 function Evaluation:shieldedHit()
-    dohttpreq("http://localhost:8001/evaluate/shielded/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/shielded", function(data2)
     end)
 end
 
 function Evaluation:downed()
-    dohttpreq("http://localhost:8001/evaluate/downed/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/downed", function(data2)
     end)
 end
 
 function Evaluation:revived()
-    dohttpreq("http://localhost:8001/evaluate/revived/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/revived", function(data2)
     end)
 end
 
 function Evaluation:levelLoad()
-    dohttpreq("http://localhost:8001/evaluate/levelload/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/levelload", function(data2)
     end)
 end
 
 function Evaluation:levelQuit()
-    dohttpreq("http://localhost:8001/evaluate/levelquit/", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/levelquit", function(data2)
+    end)
+end
+
+function Evaluation:hpAndArmor()
+    log("painevent Hp and Armor save")
+    dohttpreq("http://localhost:8001/evaluate/sethp/"..MyPlayer.hp.."?armor="..MyPlayer.armor, function(data2)
+    end)
+end
+
+function Evaluation:regenerateArmor()
+    dohttpreq("http://localhost:8001/evaluate/regeneratearmor", function(data2)
     end)
 end
