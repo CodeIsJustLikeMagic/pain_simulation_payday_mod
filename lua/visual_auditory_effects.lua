@@ -211,35 +211,6 @@ Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silen
     -- runs when player is helped after being downed
 end)
 
-Hooks:PostHook(PlayerDamage, "restore_health","restore_health_pain_event", function(self)
-    log("painevent replenish")
-    dohttpreq("http://localhost:8001/evaluate/restore_hp/", function(data2)
-    end)
-    Evaluation:hpAndArmor()
-    -- this runs after armor regenerateArmor a few times
-end)
-
-Hooks:PostHook(PlayerDamage, "recover_health","recover_health_event", function(self)
-    log("painevent doctor bag used")
-    dohttpreq("http://localhost:8001/evaluate/doctor_bag_used/", function(data2)
-    end)
-    Evaluation:hpAndArmor()
-    -- runs when doctor bag is used
-end)
-
-Hooks:PostHook(PlayerDamage, "set_armor","set_armor_playerdamage_pain_event", function(self)
-    log("painevent set_armor")
-
-    Evaluation:hpAndArmor()
-    -- runs anytime armor is set, armor goes up over a few calls
-end)
-
-Hooks:PostHook(PlayerDamage, "set_health","set_armor_playerdamage_pain_event", function(self)
-    log("painevent set_armor")
-    Evaluation:hpAndArmor()
-    -- runs anytime hp is set
-end)
-
 Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
     log("_regenerate_armor")
     Evaluation:regenerateArmor()
