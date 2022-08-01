@@ -89,15 +89,22 @@ Hooks:PostHook(PlayerDamage, "set_health","set_armor_playerdamage_pain_event", f
     -- runs anytime hp is set
 end)
 
-Hooks:PostHook(HuskPlayerDamage, "_send_damage_to_owner","_send_damage_to_owner_pain_event", function(self, attack_data)
-    log("painevent enemy damaged")
-    dohttpreq("http://localhost:8001/evaluate/enemy_damaged", function(data2)
+Hooks:PostHook(HUDHitConfirm, "on_hit_confirmed","on_hit_confirmed_pain_event", function(self, damage_scale)
+    log("painevent on hit confirmed")
+    dohttpreq("http://localhost:8001/evaluate/enemy_hit", function(data2)
     end)
 end)
 
-Hooks:PostHook(HuskPlayerDamage, "init","_husk_player_damage_init_pain_event", function(self, unit)
-    log("painevent HuskPlayerDamage init")
-    dohttpreq("http://localhost:8001/evaluate/enemy_damaged", function(data2)
+Hooks:PostHook(HUDHitConfirm, "on_headshot_confirmed","on_headshot_confirmed_pain_event", function(self, damage_scale)
+    log("painevent on headshot confirmed")
+    dohttpreq("http://localhost:8001/evaluate/enemy_headshot", function(data2)
     end)
 end)
+
+Hooks:PostHook(HUDHitConfirm, "on_crit_confirmed","on_crit_confirmed_pain_event", function(self, damage_scale)
+    log("painevent on crit confirmed")
+    dohttpreq("http://localhost:8001/evaluate/enemy_crit", function(data2)
+    end)
+end)
+
 
