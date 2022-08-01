@@ -88,3 +88,16 @@ Hooks:PostHook(PlayerDamage, "set_health","set_armor_playerdamage_pain_event", f
     Evaluation:hpAndArmor()
     -- runs anytime hp is set
 end)
+
+Hooks:PostHook(HuskPlayerDamage, "_send_damage_to_owner","_send_damage_to_owner_pain_event", function(self, attack_data)
+    log("painevent enemy damaged")
+    dohttpreq("http://localhost:8001/evaluate/enemy_damaged", function(data2)
+    end)
+end)
+
+Hooks:PostHook(HuskPlayerDamage, "init","_husk_player_damage_init_pain_event", function(self, unit)
+    log("painevent HuskPlayerDamage init")
+    dohttpreq("http://localhost:8001/evaluate/enemy_damaged", function(data2)
+    end)
+end)
+
