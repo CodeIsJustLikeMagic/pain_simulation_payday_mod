@@ -119,6 +119,9 @@ if not PainEvent then
     PainEvent.DisableDefaultHitDirection = true
     PainEvent.DisableDefaultSound = true
 
+    Leech_Ampule_Effect._settings_path = ModPath .. "menu/settings.txt"
+    Leech_Ampule_Effect._menu_path = ModPath .. "menu/menu.txt"
+
 end
 
 local function LoadProfile()
@@ -205,8 +208,6 @@ end)
 Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
     PlayerReviveRoutine()
     log("painevent player revived by ally")
-    dohttpreq("http://localhost:8001/evaluate/revive", function(data2)
-    end)
     Evaluation:hpAndArmor()
     -- runs when player is helped after being downed
 end)
@@ -230,16 +231,22 @@ local function RunRoutine(visualEffects, soundEffects)
     end
 end
 
-function PlayerHitRoutineShielded()
-    log("painevent player hit routine shielded")
+function PlayerHitRoutineShielded(rotation)
+    log("painevent player hit routine shielded ")
     RunRoutine(PainEvent.VisualEffectsShielded, PainEvent.SoundEffectsShielded)
     Evaluation:shieldedHit()
+
+    dohttpreq("http://localhost:8001/event/damage_taken_shielded/"..rotation, function(data2)
+    end)
 end
 
-function PlayerHitRoutineUnShielded()
-    log("painevent player hit routine unshielded")
+function PlayerHitRoutineUnShielded(rotation)
+    log("painevent player hit routine unshielded ")
     RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
     Evaluation:unshieldedHit()
+
+    dohttpreq("http://localhost:8001/event/damage_taken_unshielded/"..rotation, function(data2)
+    end)
 end
 
 function PlayerHitRoutineDowned()
@@ -255,6 +262,9 @@ function PlayerHitRoutineDowned()
         PainEvent.VisualEffectsShielded[i]:setVisible(false,hud)
     end
     Evaluation:downed()
+
+    dohttpreq("http://localhost:8001/event/downed", function(data2)
+    end)
 end
 
 function PlayerReviveRoutine()
@@ -263,6 +273,10 @@ function PlayerReviveRoutine()
         PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
     end
     Evaluation:revived()
+
+    dohttpreq("http://localhost:8001/event/revived", function(data2)
+    end)
+
 end
 
 local function Effect_update(t, dt)
@@ -323,20 +337,46 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
     -- runs when sound is played for player
 end
 
+Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
+    Evaluation:hpAndArmor()
+    log("painevent add hit indicator. run FeedbackRoutines")
+    --run our visual effects
+    log("damage origin: "..damage_origin)
+    log("damage_type: "..damage_type)
+
+    -- figure out rotation
+
+    local rotation = 0
+    if managers.player:player_unit() then
+        local ply_camera = managers.player:player_unit():camera()
+        if ply_camera then
+            local target_vec = ply_camera:position() - damage_origin
+            local angle = target_vec:to_polar_with_reference(ply_camera:forward(), math.UP).spin
+            if fixed_angle ~= nil then
+                angle = fixed_angle
+            end
+            -- rotation that is used for viusal direction indicators at the middle of the screen
+            rotation = 90 - angle
+
+            -- change rotation to fit bhaptics :)
+            rotation = 180 - rotation + 90
+        end
+    end
+    log("rotation is "..rotation)
+
+    if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
+    log("painevent run hit routine unshielded")
+    PlayerHitRoutineUnShielded(rotation)
+    else if damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
+    log("painevent run hit routine shielded")
+    PlayerHitRoutineShielded(rotation)
+    end
+    end
+    end)
 
 if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     function HUDHitDirection:_get_indicator_texture(damage_type)
-        Evaluation:hpAndArmor()
         log("painevent get indicator texture upon getting hit")
-
-        --run our visual effects
-        if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
-            PlayerHitRoutineUnShielded()
-        else if damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
-            PlayerHitRoutineShielded()
-            end
-        end
-
         -- disable default hit direction arrow
         if PainEvent.DisableDefaultHitDirection then
             return "assets/guis/textures/nothing"

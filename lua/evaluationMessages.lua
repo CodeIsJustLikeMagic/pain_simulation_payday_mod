@@ -60,6 +60,8 @@ function Evaluation:regenerateArmor()
     end)
 end
 
+
+
 Hooks:PostHook(PlayerDamage, "restore_health","restore_health_pain_event", function(self)
     log("painevent replenish")
     dohttpreq("http://localhost:8001/evaluate/restore_hp", function(data2)

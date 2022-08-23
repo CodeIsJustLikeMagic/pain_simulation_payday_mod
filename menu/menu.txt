@@ -1,0 +1,35 @@
+{
+  "menu_id": "Pain_Events",
+  "parent_menu_id": "blt_options",
+  "title": "Pain_Event_mod",
+  "description": "Pain_Event_desc",
+  "back_callback" : "Pain_Event_callback_options_closed",
+  "focus_changed_callback" : "Pain_Event_callback_focused_changed"
+  "items": [
+    {
+      "type": "toggle",
+      "id": "mod_enabled",
+      "title": "pain_event_mod_enabled",
+      "description": "pain_event_mod_enabled_desc",
+      "callback": "Pain_Event_toggle_callback",
+      "value" : "mod_enabled",
+    },
+    {
+      "type": "divider",
+      "size" : 20,
+    },
+    {
+      "type": "multiple_choice",
+      "id": "feedback_profile",
+      "title": "pain_event_feedback_profile",
+      "description": "pain_event_feedback_profile_desc",
+      "callback": "Pain_Event_multiple_choice_callback",
+      "items" : [
+        "Profile0",
+        "Profile1",
+        "Profile2"
+      ],
+      "value" : "profile_name",
+    }
+  ]
+}
