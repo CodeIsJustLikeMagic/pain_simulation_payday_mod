@@ -337,6 +337,14 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
     -- runs when sound is played for player
 end
 
+Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
+    log("painevent on_tased")
+    dohttpreq("http://localhost:8001/event/tased", function(data2)
+    end)
+    Evaluation:hpAndArmor()
+    Evaluation:tased()
+end)
+
 Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
     Evaluation:hpAndArmor()
     log("painevent add hit indicator. run FeedbackRoutines")

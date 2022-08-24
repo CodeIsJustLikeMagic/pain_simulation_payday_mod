@@ -60,6 +60,10 @@ function Evaluation:regenerateArmor()
     end)
 end
 
+function Evaluation:tased()
+    dohttpreq("http://localhost:8001/evaluate/tased", function(data2)
+    end)
+end
 
 
 Hooks:PostHook(PlayerDamage, "restore_health","restore_health_pain_event", function(self)
