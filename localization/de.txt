@@ -1,0 +1,7 @@
+{
+	"pain_simulation_title" : "Schmerz Simulation",
+	"pain_simulation_enabled_title" : "Enabled",
+	"pain_simulation_enabled_desc" : "Enables oder disables den mod. Änderung greifen erst nach Spiel neustart.",
+	"pain_simulation_feedback_profile" : "Feedback Profil",
+	"pain_simulation_feedback_profile_desc" : "Profile sind json Dateien die beschreiben, wie das Schadens-Feedback aussieht.",
+}

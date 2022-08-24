@@ -1,18 +1,17 @@
 {
-  "menu_id": "Pain_Events",
+  "menu_id": "pain_simulation_option",
   "parent_menu_id": "blt_options",
-  "title": "Pain_Event_mod",
-  "description": "Pain_Event_desc",
-  "back_callback" : "Pain_Event_callback_options_closed",
-  "focus_changed_callback" : "Pain_Event_callback_focused_changed"
+  "title": "pain_simulation_title",
+  "back_callback" : "callback_pain_simulation_close",
+  "focus_changed_callback" : "callback_pain_simulation_focus_changed"
   "items": [
     {
       "type": "toggle",
-      "id": "mod_enabled",
-      "title": "pain_event_mod_enabled",
-      "description": "pain_event_mod_enabled_desc",
-      "callback": "Pain_Event_toggle_callback",
-      "value" : "mod_enabled",
+      "id": "pain_simulation_enabled",
+      "title": "pain_simulation_enabled_title",
+      "description": "pain_simulation_enabled_desc",
+      "callback": "callback_pain_simulation_enabled",
+      "value" : "enabled",
     },
     {
       "type": "divider",
@@ -21,9 +20,9 @@
     {
       "type": "multiple_choice",
       "id": "feedback_profile",
-      "title": "pain_event_feedback_profile",
-      "description": "pain_event_feedback_profile_desc",
-      "callback": "Pain_Event_multiple_choice_callback",
+      "title": "pain_simulation_feedback_profile",
+      "description": "pain_simulation_feedback_profile_desc",
+      "callback": "callback_pain_simulation_multiple_choice",
       "items" : [
         "Profile0",
         "Profile1",

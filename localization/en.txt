@@ -1,0 +1,7 @@
+{
+	"pain_simulation_title" : "Pain Simulation",
+	"pain_simulation_enabled_title" : "Enabled",
+	"pain_simulation_enabled_desc" : "Enables or disables the mod. Changes take place after restart.",
+	"pain_simulation_feedback_profile" : "Feedback Profile",
+	"pain_simulation_feedback_profile_desc" : "Profiles are json files that describe damage Feedback behavior",
+}

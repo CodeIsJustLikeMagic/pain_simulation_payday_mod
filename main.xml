@@ -1,0 +1,6 @@
+<mod name="Pain Simulation" author="Janelle Pfeifer" global_key="PainSimulation" color="Color(0,1,1)">
+	<Localization directory="localization" default="en.txt">
+		<loc file="en.txt" language="english" />
+		<loc file="de.txt" language="deutsch" />
+	</Localization>
+</mod>
