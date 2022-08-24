@@ -3,11 +3,11 @@ if not PainSimulationOptions then
     PainSimulationOptions._settings_path = ModPath .. "menu/PainSimulationSettings.txt"
     PainSimulationOptions._menu_path = ModPath .. "menu/menu.txt"
     PainSimulationOptions.profiles = {
-        "Profile0", "Profile1", "Profile2"
+        "Profile0.json", "Profile1.json", "Profile2.json"
     }
     PainSimulationOptions._settings = {
         enabled = true,
-        profile_name = "Profile1"
+        feedback_profile = 1
     }
 end
 
@@ -20,8 +20,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
     end
 
     MenuCallbackHandler.callback_pain_simulation_multiple_choice = function(self, item)
-        log("PainSimulation save pain simulation multiple choice "..tostring(item:name()) .. " is "..tostring(item:value()))
-        PainSimulationOptions._settings[item:name()] = item:value()
+        PainSimulationOptions._settings.feedback_profile = item:value()
         PainSimulationOptions:save()
     end
 
@@ -36,7 +35,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
         else
             PainSimulationOptions:save()
         end
-        end
+    end
 
     function PainSimulationOptions:save()
         local file = io.open(PainSimulationOptions._settings_path, 'w+')
@@ -66,9 +65,8 @@ function PainSimulationOptions:IsEnabled()
 end
 
 function PainSimulationOptions:GetProfile()
-    return PainSimulationOptions._settings.profile_name
-end
-
-function PainSimulationOptions:SetProfile(profile_name)
-    PainSimulationOptions._settings.profile_name = profile_name
+    if PainSimulationOptions._settings.enabled == false then
+        return "Profile0.json"
+    end
+    return PainSimulationOptions.profiles[PainSimulationOptions._settings.feedback_profile]
 end

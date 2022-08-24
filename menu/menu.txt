@@ -28,7 +28,7 @@
         "Profile1",
         "Profile2"
       ],
-      "value" : "profile_name",
+      "value" : "feedback_profile",
     }
   ]
 }

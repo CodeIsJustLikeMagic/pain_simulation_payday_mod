@@ -126,7 +126,8 @@ end
 
 local function LoadProfile()
 
-    local profileFile = io.open(PainEvent._path .. "Profile2.json","r")
+    local profileFile = io.open(PainEvent._path .. PainSimulationOptions:GetProfile(),"r")
+    log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
     local profile
     if profileFile then
 
@@ -154,7 +155,7 @@ local function LoadProfile()
                 table.insert(EventSoundEffects[event],s)
             end
         end
-
+        log("PainSimulation disable hit direction is "..profile.disabledefaulthitdirection)
         if profile.disabledefaultsound == "false" then
             PainEvent.DisableDefaultSound = false
         else
@@ -163,6 +164,7 @@ local function LoadProfile()
 
         if profile.disabledefaulthitdirection == "false" then
             PainEvent.DisableDefaultHitDirection = false
+            log("PainSimulation should show hit direction")
         else
             PainEvent.DisableDefaultHitDirection = true
         end
@@ -387,6 +389,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
         log("painevent get indicator texture upon getting hit")
         -- disable default hit direction arrow
         if PainEvent.DisableDefaultHitDirection then
+            log("PainSimulation hiding default hit direction")
             return "assets/guis/textures/nothing"
         end
         if managers.user:get_setting("color_blind_hit_direction") then
