@@ -295,6 +295,8 @@ end
 
 Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
     Evaluation:levelQuit()
+    dohttpreq("http://localhost:8001/event/levelquit", function(data2)
+    end)
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
     -- runs just before level is quit
 end)
@@ -347,7 +349,7 @@ Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, n
     Evaluation:tased()
 end)
 
-Hooks:PostHook(PlayerDamage, "erase_tased_data", "erase_tased_data_pain_event", function(self, non_lethal)
+Hooks:PostHook(PlayerDamage, "erase_tase_data", "erase_tase_data_pain_event", function(self, non_lethal)
     log("painsimulation erase_tased_data")
     dohttpreq("http://localhost:8001/event/tasestoped", function(data2)
     end)
