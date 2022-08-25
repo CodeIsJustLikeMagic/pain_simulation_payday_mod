@@ -9,6 +9,7 @@ if not PainSimulationOptions then
         enabled = true,
         feedback_profile = 1
     }
+    PainSimulationOptions.playertag = "Player1"
 end
 
 Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", function(menu_manager, nodes)

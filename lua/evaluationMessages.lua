@@ -40,7 +40,7 @@ function Evaluation:revived()
 end
 
 function Evaluation:levelLoad()
-    dohttpreq("http://localhost:8001/evaluate/levelload", function(data2)
+    dohttpreq("http://localhost:8001/evaluate/levelload/"..PainSimulationOptions:GetProfile().."?playertag=".. PainSimulationOptions.playertag, function(data2)
     end)
 end
 

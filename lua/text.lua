@@ -32,13 +32,13 @@ function SoundEffect:new(paths)
 end
 
 function SoundEffect:getSoundPath()
-    return PainEvent.sound1_path[math.random(#PainEvent.sound1_path)]
+    return Simulation.sound1_path[math.random(#Simulation.sound1_path)]
 end
 
-if not PainEvent then
-    _G.PainEvent = {}
-    PainEvent.VisualEffects = {}
-    PainEvent.SoundEffect = {}
+if not Simulation then
+    _G.Simulation = {}
+    Simulation.VisualEffects = {}
+    Simulation.SoundEffect = {}
 end
 
 local names = {}
@@ -47,7 +47,7 @@ table.insert(names, "h")
 table.insert(names, "hoi")
 
 v = VisualEffect:new(names, 0.2,{"assets/guis/textures/leech_ampule_effect", "assets/guis/textures/hello_there"},"000000",2)
-table.insert(PainEvent.VisualEffects,v)
+table.insert(Simulation.VisualEffects,v)
 
 
 

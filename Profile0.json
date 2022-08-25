@@ -2,8 +2,11 @@
     "visuals": [    ],
     "sounds": [    ]
 },"unshielded": {
-  "visuals": [  ],
-  "sounds": [  ]
+  "visuals": [],
+  "sounds": []
+},"tased": {
+  "visuals": [],
+  "sounds": []
 },"downed": {
   "visuals": [  ],
   "sounds": [  ]

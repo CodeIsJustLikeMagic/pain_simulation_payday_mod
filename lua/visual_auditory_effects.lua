@@ -14,7 +14,7 @@ function VisualEffect:new(name, duration, paths, color, layer)
     for i = 1, #visef.paths do
         local hudname = name.."texture"..i
         table.insert(visef.hudnames, hudname)
-        --log("painevent hudcreation: " .. hudname)
+        --log("painsimulation hudcreation: " .. hudname)
         local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
         if not hud.panel:child(hudname) then
             local Pain_event_visual_effect_hud_panel = hud.panel:bitmap({
@@ -40,7 +40,7 @@ end
 function VisualEffect:startEffekt()
     local texture_num = math.random(#self.timers)
     self.timers[texture_num] = self.duration
-    log("painevent startEffekt of "..self.hudnames[texture_num])
+    log("painsimulation startEffekt of "..self.hudnames[texture_num])
 end
 
 function VisualEffect:update(hud)
@@ -49,8 +49,8 @@ function VisualEffect:update(hud)
         local effect_hud_panel = hud.panel:child(panelname)
 
         if self.timers[i] > 0 then
-            --log("painevent set texture visible "..panelname)
-            --log("painevent set visible delta time is"..TimerManager:main():delta_time())
+            --log("painsimulation set texture visible "..panelname)
+            --log("painsimulation set visible delta time is"..TimerManager:main():delta_time())
             self.timers[i] = self.timers[i] - TimerManager:main():delta_time()
             effect_hud_panel:set_visible(true)
 
@@ -70,7 +70,7 @@ function VisualEffect:setVisible(bool, hud)
         effect_hud_panel:set_visible(bool)
 
         if bool then
-            --log("painevent set "..panelname.." visible")
+            --log("painsimulation set "..panelname.." visible")
             --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
             --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
         else
@@ -89,7 +89,7 @@ function SoundEffect:new(paths)
     setmetatable(sndef, SoundEffect)
     sndef.soundpaths = {}
     for i=1, #paths do
-        table.insert(sndef.soundpaths, PainEvent._path .. paths[i])
+        table.insert(sndef.soundpaths, Simulation._path .. paths[i])
     end
     return sndef
 end
@@ -98,35 +98,33 @@ function SoundEffect:getSoundPath()
     return self.soundpaths[math.random(#self.soundpaths)]
 end
 
-if not PainEvent then
-    _G.PainEvent = {}
-    PainEvent._path = ModPath
+if not Simulation then
+    _G.Simulation = {}
+    log("Creating Pain Simulation")
+    Simulation._path = ModPath
+    log("Path is ".. Simulation._path)
 
     --for shielded hit
-    PainEvent.VisualEffectsShielded = {}
-    PainEvent.SoundEffectsShielded = {}
-    --PainEvent.sound_path = {PainEvent._path .. "assets/sounds/squelsh hit__.ogg", PainEvent._path .. "assets/sounds/blup.ogg"}
+    Simulation.VisualEffectsShielded = {}
+    Simulation.SoundEffectsShielded = {}
+    --painsimulation.sound_path = {painsimulation._path .. "assets/sounds/squelsh hit__.ogg", painsimulation._path .. "assets/sounds/blup.ogg"}
 
     --for unshielded hit
-    PainEvent.VisualEffectsUnshielded = {}
-    PainEvent.SoundEffectsUnshielded = {}
+    Simulation.VisualEffectsUnshielded = {}
+    Simulation.SoundEffectsUnshielded = {}
 
     --for downed
-    PainEvent.VisualEffectsDowned = {}
-    PainEvent.SoundEffectsDowned = {}
+    Simulation.VisualEffectsDowned = {}
+    Simulation.SoundEffectsDowned = {}
 
     --
-    PainEvent.DisableDefaultHitDirection = true
-    PainEvent.DisableDefaultSound = true
-
-    Leech_Ampule_Effect._settings_path = ModPath .. "menu/settings.txt"
-    Leech_Ampule_Effect._menu_path = ModPath .. "menu/menu.txt"
-
+    Simulation.DisableDefaultHitDirection = false
+    Simulation.DisableDefaultSound = false
 end
 
 local function LoadProfile()
 
-    local profileFile = io.open(PainEvent._path .. PainSimulationOptions:GetProfile(),"r")
+    local profileFile = io.open(Simulation._path .. PainSimulationOptions:GetProfile(),"r")
     log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
     local profile
     if profileFile then
@@ -134,22 +132,22 @@ local function LoadProfile()
         profile = json.decode(profileFile:read("*all"))
         profileFile:close()
 
-        local EventVisualEffects = {PainEvent.VisualEffectsShielded, PainEvent.VisualEffectsUnshielded, PainEvent.VisualEffectsDowned}
-        local EventSoundEffects = {PainEvent.SoundEffectsShielded, PainEvent.SoundEffectsUnshielded, PainEvent.SoundEffectsDowned}
+        local EventVisualEffects = { Simulation.VisualEffectsShielded, Simulation.VisualEffectsUnshielded, Simulation.VisualEffectsDowned}
+        local EventSoundEffects = { Simulation.SoundEffectsShielded, Simulation.SoundEffectsUnshielded, Simulation.SoundEffectsDowned}
         local eventprofile = {profile.shielded, profile.unshielded,profile.downed}
 
         for event = 1, #eventprofile do
 
-            log("painevent loading event " .. event)
+            log("painsimulation loading event " .. event)
             local visuals = eventprofile[event].visuals
-            log("painevent length of visuals: " .. #visuals)
+            log("painsimulation length of visuals: " .. #visuals)
             for i=1, #visuals do
                 local effectdata = visuals[i]
                 local v = VisualEffect:new("hudevent"..event.."vis"..i, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer)
                 table.insert(EventVisualEffects[event],v)
             end
             local sounds = eventprofile[event].sounds
-            log("painevent length of visuals: " .. #sounds)
+            log("painsimulation length of visuals: " .. #sounds)
             for i=1, #sounds do
                 local s = SoundEffect:new(sounds[i].paths)
                 table.insert(EventSoundEffects[event],s)
@@ -157,16 +155,16 @@ local function LoadProfile()
         end
         log("PainSimulation disable hit direction is "..profile.disabledefaulthitdirection)
         if profile.disabledefaultsound == "false" then
-            PainEvent.DisableDefaultSound = false
+            Simulation.DisableDefaultSound = false
         else
-            PainEvent.DisableDefaultSound = true
+            Simulation.DisableDefaultSound = true
         end
 
         if profile.disabledefaulthitdirection == "false" then
-            PainEvent.DisableDefaultHitDirection = false
+            Simulation.DisableDefaultHitDirection = false
             log("PainSimulation should show hit direction")
         else
-            PainEvent.DisableDefaultHitDirection = true
+            Simulation.DisableDefaultHitDirection = true
         end
 
     end
@@ -174,19 +172,19 @@ end
 
 if blt.xaudio then
     blt.xaudio.setup()
-    log("painevent setup xAudio")
+    log("painsimulation setup xAudio")
 end
 
 -- load texture files so game can find them later
-for _, file in pairs(file.GetFiles(PainEvent._path.. "assets/guis/textures/")) do
-    DB:create_entry(Idstring("texture"), Idstring("assets/guis/textures/".. file:gsub(".texture", "")), PainEvent._path.. "assets/guis/textures/".. file)
+for _, file in pairs(file.GetFiles(Simulation._path.. "assets/guis/textures/")) do
+    DB:create_entry(Idstring("texture"), Idstring("assets/guis/textures/".. file:gsub(".texture", "")), Simulation._path.. "assets/guis/textures/".. file)
 end
---log("painevent successfully loaded texture files")
+--log("painsimulation successfully loaded texture files")
 
 
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
-    --log("painevent playerdamage init")
+    --log("painsimulation playerdamage init")
 
     --read profile json and run SetUpHudTexture for each texture read.
     LoadProfile()
@@ -198,6 +196,8 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     end)
 
     Evaluation:levelLoad()
+    dohttpreq("http://localhost:8001/event/levelload/"..PainSimulationOptions:GetProfile(), function(data2)
+    end)
     -- runs at level load
 end)
 
@@ -209,7 +209,7 @@ end)
 
 Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
     PlayerReviveRoutine()
-    log("painevent player revived by ally")
+    log("painsimulation player revived by ally")
     Evaluation:hpAndArmor()
     -- runs when player is helped after being downed
 end)
@@ -224,7 +224,7 @@ end)
 local function RunRoutine(visualEffects, soundEffects)
 
     for i=1, #visualEffects do
-        --log("painevent startEffect "..i)
+        --log("painsimulation startEffect "..i)
         visualEffects[i]:startEffekt()
     end
 
@@ -234,8 +234,8 @@ local function RunRoutine(visualEffects, soundEffects)
 end
 
 function PlayerHitRoutineShielded(rotation)
-    log("painevent player hit routine shielded ")
-    RunRoutine(PainEvent.VisualEffectsShielded, PainEvent.SoundEffectsShielded)
+    log("painsimulation player hit routine shielded ")
+    RunRoutine(Simulation.VisualEffectsShielded, Simulation.SoundEffectsShielded)
     Evaluation:shieldedHit()
 
     dohttpreq("http://localhost:8001/event/damage_taken_shielded/"..rotation, function(data2)
@@ -243,8 +243,8 @@ function PlayerHitRoutineShielded(rotation)
 end
 
 function PlayerHitRoutineUnShielded(rotation)
-    log("painevent player hit routine unshielded ")
-    RunRoutine(PainEvent.VisualEffectsUnshielded, PainEvent.SoundEffectsUnshielded)
+    log("painsimulation player hit routine unshielded ")
+    RunRoutine(Simulation.VisualEffectsUnshielded, Simulation.SoundEffectsUnshielded)
     Evaluation:unshieldedHit()
 
     dohttpreq("http://localhost:8001/event/damage_taken_unshielded/"..rotation, function(data2)
@@ -253,15 +253,15 @@ end
 
 function PlayerHitRoutineDowned()
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    log("painevent player hit routine downed")
-    for i=1, #PainEvent.VisualEffectsDowned do
-        PainEvent.VisualEffectsDowned[i]:setVisible(true,hud)
+    log("painsimulation player hit routine downed")
+    for i=1, #Simulation.VisualEffectsDowned do
+        Simulation.VisualEffectsDowned[i]:setVisible(true,hud)
     end
-    for i=1, #PainEvent.VisualEffectsUnshielded do
-        PainEvent.VisualEffectsUnshielded[i]:setVisible(false,hud)
+    for i=1, #Simulation.VisualEffectsUnshielded do
+        Simulation.VisualEffectsUnshielded[i]:setVisible(false,hud)
     end
-    for i=1, #PainEvent.VisualEffectsShielded do
-        PainEvent.VisualEffectsShielded[i]:setVisible(false,hud)
+    for i=1, #Simulation.VisualEffectsShielded do
+        Simulation.VisualEffectsShielded[i]:setVisible(false,hud)
     end
     Evaluation:downed()
 
@@ -271,8 +271,8 @@ end
 
 function PlayerReviveRoutine()
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    for i=1, #PainEvent.VisualEffectsDowned do
-        PainEvent.VisualEffectsDowned[i]:setVisible(false,hud)
+    for i=1, #Simulation.VisualEffectsDowned do
+        Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
     end
     Evaluation:revived()
 
@@ -285,11 +285,11 @@ local function Effect_update(t, dt)
 
     --for every hud update timer and make invisible if their duration ran out
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    for j = 1, #PainEvent.VisualEffectsShielded do
-        PainEvent.VisualEffectsShielded[j]:update(hud)
+    for j = 1, #Simulation.VisualEffectsShielded do
+        Simulation.VisualEffectsShielded[j]:update(hud)
     end
-    for j = 1, #PainEvent.VisualEffectsUnshielded do
-        PainEvent.VisualEffectsUnshielded[j]:update(hud)
+    for j = 1, #Simulation.VisualEffectsUnshielded do
+        Simulation.VisualEffectsUnshielded[j]:update(hud)
     end
 end
 
@@ -309,10 +309,10 @@ end
 --replace whole function. needs required script so PlayerSound isnt a nil value
 if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
     function PlayerSound:play(sound_name, source_name, sync)
-        --log("painevent playersound "..sound_name)
+        --log("painsimulation playersound "..sound_name)
 
         --disable hit sounds
-        if PainEvent.DisableDefaultSound then
+        if Simulation.DisableDefaultSound then
             if sound_name == "player_hit" or sound_name == "player_hit_permadamage" or sound_name == "player_armor_gone_stinger" then
                 return
             end
@@ -340,16 +340,22 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
 end
 
 Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
-    log("painevent on_tased")
+    log("painsimulation on_tased")
     dohttpreq("http://localhost:8001/event/tased", function(data2)
     end)
     Evaluation:hpAndArmor()
     Evaluation:tased()
 end)
 
+Hooks:PostHook(PlayerDamage, "erase_tased_data", "erase_tased_data_pain_event", function(self, non_lethal)
+    log("painsimulation erase_tased_data")
+    dohttpreq("http://localhost:8001/event/tasestoped", function(data2)
+    end)
+end)
+
 Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
     Evaluation:hpAndArmor()
-    log("painevent add hit indicator. run FeedbackRoutines")
+    log("painsimulation add hit indicator. run FeedbackRoutines")
     --run our visual effects
     log("damage origin: "..damage_origin)
     log("damage_type: "..damage_type)
@@ -375,10 +381,10 @@ Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_e
     log("rotation is "..rotation)
 
     if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
-    log("painevent run hit routine unshielded")
+    log("painsimulation run hit routine unshielded")
     PlayerHitRoutineUnShielded(rotation)
     else if damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
-    log("painevent run hit routine shielded")
+    log("painsimulation run hit routine shielded")
     PlayerHitRoutineShielded(rotation)
     end
     end
@@ -386,9 +392,9 @@ Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_e
 
 if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     function HUDHitDirection:_get_indicator_texture(damage_type)
-        log("painevent get indicator texture upon getting hit")
+        log("painsimulation get indicator texture upon getting hit")
         -- disable default hit direction arrow
-        if PainEvent.DisableDefaultHitDirection then
+        if Simulation.DisableDefaultHitDirection then
             log("PainSimulation hiding default hit direction")
             return "assets/guis/textures/nothing"
         end

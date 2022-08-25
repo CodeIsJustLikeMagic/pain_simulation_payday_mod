@@ -1,1 +1,0 @@
-{"fade_effect_enabled":true,"cooldown_effect_color":8,"fade_effect_type":1,"effect_color":1,"end_sfx_sound":2,"end_sfx":true,"effect_enabled":true,"mod_enabled":true,"cooldown_effect_fade_enabled":true,"cooldown_effect_fade_type":2,"cooldown_effect_enabled":true}

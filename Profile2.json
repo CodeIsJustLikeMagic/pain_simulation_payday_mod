@@ -10,7 +10,12 @@
       }
     ],
     "sounds": [
-    ]
+    ],
+  "haptic": {
+    "patterns":  ["Impact1", "Impact2", "Impact3"],
+    "lowerbound": 0.15, "upperbound": 0.3,
+    "duration": 0.5,
+    "rotation": "true"}
   }
 ,"unshielded": {
   "visuals": [
@@ -48,8 +53,50 @@
     }
   ],
   "sounds": [
-  ]
-},"downed": {
+  ],
+  "haptic": {
+    "patterns":  ["Impact1", "Impact2", "Impact3"],
+    "lowerbound": 1, "upperbound": 1,
+    "duration": 0.5,
+    "rotation": "true"}
+},"tased": {
+  "visuals": [
+    {
+      "duration": 100,
+      "paths": [
+        "assets/guis/textures/leech_ampule_effect",
+        "assets/guis/textures/hello_there"
+      ],
+      "color": "000000",
+      "layer": 2
+    },
+    {
+      "duration": 100,
+      "paths": [
+        "assets/guis/textures/leech_end_cooldown_effect"
+      ],
+      "color": "000000",
+      "layer": 1
+    }
+  ],
+  "sounds": [
+    {
+      "paths": [
+        "assets/sounds/squelsh hit__.ogg"
+      ]
+    }
+  ],
+  "haptic": {
+    "patterns": [
+      "Electric_front_and_back"
+    ],
+    "lowerbound": 0.7,
+    "upperbound": 1,
+    "duration": 1.5,
+    "sleep": 0.2
+  }
+},
+  "downed": {
   "visuals": [
     {
       "duration": 0,
@@ -85,6 +132,10 @@
     }
   ],
   "sounds": [
-  ]
+  ],
+    "haptic": {
+      "patterns":  ["Heartbeat2"],
+      "lowerbound": 1, "upperbound": 1,
+      "duration": 0.8, "sleep": 1}
 },"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
 }
