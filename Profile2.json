@@ -92,8 +92,8 @@
     ],
     "lowerbound": 0.7,
     "upperbound": 1,
-    "duration": 1.5,
-    "sleep": 0.2
+    "duration": 2,
+    "sleep": 2.01
   }
 },
   "downed": {

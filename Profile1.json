@@ -86,9 +86,9 @@
       "Electric_front_and_back"
     ],
     "lowerbound": 0.7,
-    "upperbound": 1.5,
-    "duration": 1.5,
-    "sleep": 0.2
+    "upperbound": 1,
+    "duration": 2,
+    "sleep": 2.01
   }
 },
   "downed": {
@@ -118,10 +118,9 @@
       ]
     }
   ],
-  "haptic": {
-    "patterns":  ["Heartbeat2"],
-    "lowerbound": 0.7, "upperbound": 0.8,
-    "duration": 0.8,
-    "sleep": 1}
+    "haptic": {
+      "patterns":  ["Heartbeat2"],
+      "lowerbound": 1, "upperbound": 1,
+      "duration": 0.8, "sleep": 1}
 },"disabledefaultsound" : "true", "disabledefaulthitdirection" : "true"
 }
