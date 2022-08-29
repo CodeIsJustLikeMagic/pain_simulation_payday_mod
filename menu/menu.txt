@@ -24,9 +24,11 @@
       "description": "pain_simulation_feedback_profile_desc",
       "callback": "callback_pain_simulation_multiple_choice",
       "items" : [
-        "Profile0",
-        "Profile1",
-        "Profile2"
+        "Original ho haptic",
+        "Original visual strong haptic",
+        "Strong visual strong haptic",
+        "Original visual strong haptic no direciotn arrows"
+        "Strong visuals strong haptic strong sound"
       ],
       "value" : "feedback_profile",
     }
