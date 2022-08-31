@@ -117,6 +117,10 @@ if not Simulation then
     Simulation.VisualEffectsDowned = {}
     Simulation.SoundEffectsDowned = {}
 
+    --for tased
+    Simulation.VisualEffectsTased = {}
+    Simulation.SoundEffectsTased = {}
+
     --
     Simulation.DisableDefaultHitDirection = false
     Simulation.DisableDefaultSound = false
@@ -132,9 +136,9 @@ local function LoadProfile()
         profile = json.decode(profileFile:read("*all"))
         profileFile:close()
 
-        local EventVisualEffects = { Simulation.VisualEffectsShielded, Simulation.VisualEffectsUnshielded, Simulation.VisualEffectsDowned}
-        local EventSoundEffects = { Simulation.SoundEffectsShielded, Simulation.SoundEffectsUnshielded, Simulation.SoundEffectsDowned}
-        local eventprofile = {profile.shielded, profile.unshielded,profile.downed}
+        local EventVisualEffects = { Simulation.VisualEffectsShielded, Simulation.VisualEffectsUnshielded, Simulation.VisualEffectsDowned, Simulation.VisualEffectsTased}
+        local EventSoundEffects = { Simulation.SoundEffectsShielded, Simulation.SoundEffectsUnshielded, Simulation.SoundEffectsDowned, Simulation.SoundEffectsTased}
+        local eventprofile = {profile.shielded, profile.unshielded,profile.downed, profile.tased}
 
         for event = 1, #eventprofile do
 

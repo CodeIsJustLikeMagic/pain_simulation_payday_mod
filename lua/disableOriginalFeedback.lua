@@ -1,6 +1,6 @@
 
 -- disable hit sounds
--- replace whole function. needs required script so PlayerSound isnt a nil value
+-- replace whole function. needs required script so PlayerSound isn't a nil value
 if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
     function PlayerSound:play(sound_name, source_name, sync)
         --log("painsimulation playersound "..sound_name)
@@ -34,6 +34,7 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playersound" then
 end
 
 -- disable default hit direction arrow, by replacing with blank texture
+-- this could also be done with a mod_override but I want to control when it's enabled/disabled
 if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     function HUDHitDirection:_get_indicator_texture(damage_type)
         log("painsimulation get indicator texture upon getting hit")

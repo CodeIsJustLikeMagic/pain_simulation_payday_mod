@@ -1,25 +1,3 @@
-
-
-Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
-    PlayerHitRoutineDowned()
-    Evaluation:hpAndArmor()
-    -- runs when player is downed (0 hp and 0 armor)
-end)
-
-Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
-    PlayerReviveRoutine()
-    log("painsimulation player revived by ally")
-    Evaluation:hpAndArmor()
-    -- runs when player is helped after being downed
-end)
-
-Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
-    log("_regenerate_armor")
-    Evaluation:regenerateArmor()
-
-    -- armor regenerating itself after not being attacked for a few seconds
-end)
-
 local function RunRoutine(visualEffects, soundEffects)
 
     for i=1, #visualEffects do
@@ -64,47 +42,55 @@ function PlayerHitRoutineDowned()
 
 end
 
+function PlayerTasedRoutine()
+    local hud = manager.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    log("painsimulation player tased routine")
+    for i = 1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(true,hud)
+    end
+    Haptic:tased()
+end
+
+function PlayerStopTasedRoutine()
+    local hud = manager.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    log("painsimulation player tased routine")
+    for i = 1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
+    end
+    Haptic:tased()
+end
+
 function PlayerReviveRoutine()
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     for i=1, #Simulation.VisualEffectsDowned do
         Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
     end
-    Evaluation:revived()
-
     Haptic:revived()
-
 end
 
-local function Effect_update(t, dt)
-
-    --for every hud update timer and make invisible if their duration ran out
-    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    for j = 1, #Simulation.VisualEffectsShielded do
-        Simulation.VisualEffectsShielded[j]:update(hud)
-    end
-    for j = 1, #Simulation.VisualEffectsUnshielded do
-        Simulation.VisualEffectsUnshielded[j]:update(hud)
-    end
-end
-
-Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
-    Evaluation:levelQuit()
-    Haptic:levelQuit()
-    managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
-    -- runs just before level is quit
+Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
+    PlayerHitRoutineDowned()
+    Evaluation:hpAndArmor()
+    -- runs when player is downed (0 hp and 0 armor)
 end)
 
-if string.lower(RequiredScript) == "lib/managers/hudmanager" then
-    Hooks:PostHook(HUDManager, "update", "update_pain_event", function(self, t, dt)
-        Effect_update(t, dt)
-    end)
-    -- runs on every game update
-end
+Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
+    PlayerReviveRoutine()
+    log("painsimulation player revived by ally")
+    Evaluation:hpAndArmor()
+    Evaluation:revived()
+    -- runs when player is helped after being downed
+end)
 
+Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
+    log("_regenerate_armor")
+    Evaluation:regenerateArmor()
+
+    -- armor regenerating itself after not being attacked for a few seconds
+end)
 
 Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
-    log("painsimulation on_tased")
-    Haptic:tased()
+    PlayerTasedRoutine()
     Evaluation:hpAndArmor()
     Evaluation:tased()
 end)
@@ -116,7 +102,6 @@ end)
 
 Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
     Evaluation:hpAndArmor()
-    log("painsimulation add hit indicator. run FeedbackRoutines")
     --run our visual effects
     log("damage origin: "..damage_origin)
     log("damage_type: "..damage_type)
@@ -149,4 +134,30 @@ Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_e
     PlayerHitRoutineShielded(rotation)
     end
     end
+end)
+
+local function Effect_update(t, dt)
+
+    --for every hud update timer and make invisible if their duration ran out
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    for j = 1, #Simulation.VisualEffectsShielded do
+        Simulation.VisualEffectsShielded[j]:update(hud)
+    end
+    for j = 1, #Simulation.VisualEffectsUnshielded do
+        Simulation.VisualEffectsUnshielded[j]:update(hud)
+    end
+end
+
+if string.lower(RequiredScript) == "lib/managers/hudmanager" then
+    Hooks:PostHook(HUDManager, "update", "update_pain_event", function(self, t, dt)
+        Effect_update(t, dt)
+    end)
+    -- runs on every game update
+end
+
+Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
+    Evaluation:levelQuit()
+    Haptic:levelQuit()
+    managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
+    -- runs just before level is quit
 end)
