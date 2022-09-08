@@ -29,6 +29,7 @@
         "Strong visual strong haptic",
         "Original visual strong haptic no direciotn arrows"
         "Strong visuals strong haptic strong sound"
+        "Even Stronger visuals strong haptic"
       ],
       "value" : "feedback_profile",
     }

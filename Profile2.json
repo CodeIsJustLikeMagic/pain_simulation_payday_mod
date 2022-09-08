@@ -65,25 +65,23 @@
     {
       "duration": 100,
       "paths": [
-        "assets/guis/textures/leech_ampule_effect",
-        "assets/guis/textures/hello_there"
+        "assets/guis/textures/effectselectro curtain"
       ],
-      "color": "000000",
+      "color": "ffffff",
       "layer": 2
     },
     {
       "duration": 100,
       "paths": [
-        "assets/guis/textures/leech_end_cooldown_effect"
+        "assets/guis/textures/effectsdome edges"
       ],
-      "color": "000000",
+      "color": "00d6ff",
       "layer": 1
     }
   ],
   "sounds": [
     {
       "paths": [
-        "assets/sounds/squelsh hit__.ogg"
       ]
     }
   ],
@@ -102,7 +100,7 @@
     {
       "duration": 0,
       "paths": [
-        "assets/guis/textures/effectsblurred blood splatter circle"
+        "assets/guis/textures/effectsblurred blood splatter curtain"
       ],
       "color": "000000",
       "layer": 4

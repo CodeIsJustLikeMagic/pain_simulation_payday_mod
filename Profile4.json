@@ -11,6 +11,12 @@
       }
     ],
     "sounds": [
+      {
+        "paths": [
+          "assets/sounds/downloaded/511194__pablobd__headshot.ogg",
+          "assets/sounds/downloaded/splat2ogg-14668.ogg"
+        ]
+      }
     ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
@@ -54,6 +60,12 @@
     }
   ],
   "sounds": [
+    {
+      "paths": [
+        "assets/sounds/downloaded/511194__pablobd__headshot.ogg",
+        "assets/sounds/downloaded/splat2ogg-14668.ogg"
+      ]
+    }
   ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
@@ -132,7 +144,7 @@
       "layer": 1
     }
   ],
-  "sounds": [
+  "sounds": [ 
   ],
     "haptic": {
       "patterns":  ["Heartbeat2"],

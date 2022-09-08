@@ -43,7 +43,7 @@ function PlayerHitRoutineDowned()
 end
 
 function PlayerTasedRoutine()
-    local hud = manager.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     log("painsimulation player tased routine")
     for i = 1, #Simulation.VisualEffectsTased do
         Simulation.VisualEffectsTased[i]:setVisible(true,hud)
@@ -52,7 +52,7 @@ function PlayerTasedRoutine()
 end
 
 function PlayerStopTasedRoutine()
-    local hud = manager.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     log("painsimulation player tased routine")
     for i = 1, #Simulation.VisualEffectsTased do
         Simulation.VisualEffectsTased[i]:setVisible(false,hud)
