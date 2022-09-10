@@ -1,4 +1,4 @@
-{"comment":"Strong visual strong haptic strong sound",
+{"comment":"visuals strong haptic, no direction arrows",
   "shielded": {
     "visuals": [
       {
@@ -11,12 +11,6 @@
       }
     ],
     "sounds": [
-      {
-        "paths": [
-          "assets/sounds/downloaded/511194__pablobd__headshot.ogg",
-          "assets/sounds/downloaded/splat2ogg-14668.ogg"
-        ]
-      }
     ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
@@ -60,12 +54,6 @@
     }
   ],
   "sounds": [
-    {
-      "paths": [
-        "assets/sounds/downloaded/511194__pablobd__headshot.ogg",
-        "assets/sounds/downloaded/splat2ogg-14668.ogg"
-      ]
-    }
   ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
@@ -77,27 +65,22 @@
     {
       "duration": 100,
       "paths": [
-        "assets/guis/textures/leech_ampule_effect",
-        "assets/guis/textures/hello_there"
+        "assets/guis/textures/effectselectro curtain"
       ],
-      "color": "000000",
-      "layer": 2
+      "color": "ffffff",
+      "layer": 2,
+      "animate": true
     },
     {
       "duration": 100,
       "paths": [
-        "assets/guis/textures/leech_end_cooldown_effect"
+        "assets/guis/textures/effectsdome edges"
       ],
-      "color": "000000",
+      "color": "00d6ff",
       "layer": 1
     }
   ],
   "sounds": [
-    {
-      "paths": [
-        "assets/sounds/squelsh hit__.ogg"
-      ]
-    }
   ],
   "haptic": {
     "patterns": [
@@ -110,45 +93,45 @@
   }
 },
   "downed": {
-  "visuals": [
-    {
-      "duration": 0,
-      "paths": [
-        "assets/guis/textures/effectsblurred blood splatter circle"
-      ],
-      "color": "000000",
-      "layer": 4
-    },
-    {
-      "duration": 0,
-      "paths": [
-        "assets/guis/textures/effectsconcentrated edges"
-      ],
-      "color": "000000",
-      "layer": 3
-    },
-    {
-      "duration": 0,
-      "paths": [
-        "assets/guis/textures/effectsfade edges"
-      ],
-      "color": "7e878f",
-      "layer": 2
-    },
-    {
-      "duration": 0,
-      "paths": [
-        "assets/guis/textures/effectsfull screen 50"
-      ],
-      "color": "7e878f",
-      "layer": 1
-    }
-  ],
-  "sounds": [ 
+    "visuals": [
+      {
+        "duration": 0,
+        "paths": [
+          "assets/guis/textures/effectsblurred blood splatter curtain"
+        ],
+        "color": "000000",
+        "layer": 4
+      },
+      {
+        "duration": 0,
+        "paths": [
+          "assets/guis/textures/effectsconcentrated edges"
+        ],
+        "color": "000000",
+        "layer": 3
+      },
+      {
+        "duration": 0,
+        "paths": [
+          "assets/guis/textures/effectsfade edges"
+        ],
+        "color": "7e878f",
+        "layer": 2
+      },
+      {
+        "duration": 0,
+        "paths": [
+          "assets/guis/textures/effectsfull screen 50"
+        ],
+        "color": "7e878f",
+        "layer": 1
+      }
+    ],
+  "sounds": [
   ],
     "haptic": {
       "patterns":  ["Heartbeat2"],
       "lowerbound": 1, "upperbound": 1,
       "duration": 0.8, "sleep": 1}
-},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "true"
 }

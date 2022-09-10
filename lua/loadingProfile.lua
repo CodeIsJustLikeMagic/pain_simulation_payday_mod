@@ -1,7 +1,7 @@
 VisualEffect = {}
 VisualEffect.__index = VisualEffect
 
-function VisualEffect:new(name, duration, paths, color, layer)
+function VisualEffect:new(name, duration, paths, color, layer, animate)
     local visef = {}
     setmetatable(visef, VisualEffect)
     visef.hudnames = { } -- list of hudeffekt names
@@ -11,6 +11,13 @@ function VisualEffect:new(name, duration, paths, color, layer)
     visef.color = color
     visef.layer = layer
 
+    if animate == Nil then
+        log("visual effect "..name.." no animate")
+        visef.animate = false
+    else
+        visef.animate = true
+
+    end
     for i = 1, #visef.paths do
         local hudname = name.."texture"..i
         table.insert(visef.hudnames, hudname)
@@ -53,9 +60,11 @@ function VisualEffect:update(hud)
             --log("painsimulation set visible delta time is"..TimerManager:main():delta_time())
             self.timers[i] = self.timers[i] - TimerManager:main():delta_time()
             effect_hud_panel:set_visible(true)
+            if self.animate then
+                local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+                effect_hud_panel:animate(hudinfo.flash_icon, 40)
 
-            --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
-            --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
+            end
         elseif self.timers[i] <=0 then
             effect_hud_panel:stop()
             effect_hud_panel:set_visible(false)
@@ -69,13 +78,13 @@ function VisualEffect:setVisible(bool, hud)
         local effect_hud_panel = hud.panel:child(panelname)
         effect_hud_panel:set_visible(bool)
 
-        if bool then
-            --log("painsimulation set "..panelname.." visible")
-            --local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
-            --effect_hud_panel:animate(hudinfo.flash_icon, 4000000000)
-        else
+        if not bool then
             effect_hud_panel:stop()
             self.timers[i] = 0
+        end
+        if self.animate then
+            local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
+            effect_hud_panel:animate(hudinfo.flash_icon, 40)
         end
     end
 end
@@ -147,7 +156,7 @@ local function LoadProfile()
             log("painsimulation length of visuals: " .. #visuals)
             for i=1, #visuals do
                 local effectdata = visuals[i]
-                local v = VisualEffect:new("hudevent"..event.."vis"..i, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer)
+                local v = VisualEffect:new("hudevent"..event.."vis"..i, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer, effectdata.animate)
                 table.insert(EventVisualEffects[event],v)
             end
             local sounds = eventprofile[event].sounds

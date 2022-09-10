@@ -24,12 +24,12 @@
       "description": "pain_simulation_feedback_profile_desc",
       "callback": "callback_pain_simulation_multiple_choice",
       "items" : [
-        "Original ho haptic",
-        "Original visual strong haptic",
-        "Strong visual strong haptic",
-        "Original visual strong haptic no direciotn arrows"
-        "Strong visuals strong haptic strong sound"
-        "Even Stronger visuals strong haptic"
+        "0 !v !h",
+        "1 !v haptic",
+        "2 v h",
+        "3 v+ h"
+        "4 v h noArrows"
+        "5 v h s"
       ],
       "value" : "feedback_profile",
     }

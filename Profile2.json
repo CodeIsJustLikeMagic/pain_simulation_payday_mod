@@ -1,4 +1,4 @@
-{"comment":"Strong visual strong haptic",
+{"comment":"Strong visual, strong haptic",
   "shielded": {
     "visuals": [
       {
@@ -68,7 +68,8 @@
         "assets/guis/textures/effectselectro curtain"
       ],
       "color": "ffffff",
-      "layer": 2
+      "layer": 2,
+      "animate": true
     },
     {
       "duration": 100,

@@ -96,7 +96,7 @@ Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, n
 end)
 
 Hooks:PostHook(PlayerDamage, "erase_tase_data", "erase_tase_data_pain_event", function(self, non_lethal)
-    log("painsimulation erase_tased_data")
+    PlayerStopTasedRoutine()
     Haptic:taseStop()
 end)
 
