@@ -14,7 +14,8 @@
       {
         "paths": [
           "assets/sounds/downloaded/511194__pablobd__headshot_v3.ogg",
-          "assets/sounds/downloaded/splat2ogg-14668.ogg"
+          "assets/sounds/downloaded/511194__pablobd__headshot_v3_faster.ogg",
+          "assets/sounds/downloaded/511194__pablobd__headshot_v3_lower.ogg"
         ]
       }
     ],
@@ -62,8 +63,13 @@
   "sounds": [
     {
       "paths": [
-        "assets/sounds/downloaded/511194__pablobd__headshot.ogg",
-        "assets/sounds/downloaded/splat2ogg-14668.ogg"
+        "assets/sounds/downloaded/visceralbulletimpact_1.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_2.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_3.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_4.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_5.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_6.ogg",
+        "assets/sounds/downloaded/visceralbulletimpact_7.ogg"
       ]
     }
   ],
@@ -80,7 +86,7 @@
         "assets/guis/textures/effectselectro curtain"
       ],
       "color": "ffffff",
-      "layer": 2,
+      "layer": 12,
       "animate": true
     },
     {
@@ -89,7 +95,7 @@
         "assets/guis/textures/effectsdome edges"
       ],
       "color": "00d6ff",
-      "layer": 1
+      "layer": 10
     }
   ],
   "sounds": [
@@ -150,5 +156,5 @@
       "patterns":  ["Heartbeat2"],
       "lowerbound": 1, "upperbound": 1,
       "duration": 0.8, "sleep": 1}
-},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
+},"disabledefaultsound" : "true", "disabledefaulthitdirection" : "false"
 }

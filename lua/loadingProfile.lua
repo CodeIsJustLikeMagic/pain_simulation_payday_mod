@@ -160,7 +160,7 @@ local function LoadProfile()
                 table.insert(EventVisualEffects[event],v)
             end
             local sounds = eventprofile[event].sounds
-            log("painsimulation length of visuals: " .. #sounds)
+            log("painsimulation length of sounds: " .. #sounds)
             for i=1, #sounds do
                 local s = SoundEffect:new(sounds[i].paths)
                 table.insert(EventSoundEffects[event],s)

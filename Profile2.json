@@ -68,7 +68,7 @@
         "assets/guis/textures/effectselectro curtain"
       ],
       "color": "ffffff",
-      "layer": 2,
+      "layer": 12,
       "animate": true
     },
     {
@@ -77,7 +77,7 @@
         "assets/guis/textures/effectsdome edges"
       ],
       "color": "00d6ff",
-      "layer": 1
+      "layer": 10
     }
   ],
   "sounds": [
