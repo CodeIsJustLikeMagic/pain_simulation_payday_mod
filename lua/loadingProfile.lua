@@ -130,17 +130,51 @@ if not Simulation then
     Simulation.VisualEffectsTased = {}
     Simulation.SoundEffectsTased = {}
 
-    --
+    -- for dodge
+    Simulation.EnableImmersiveDodgeSounds = false
+
+    -- disable original
     Simulation.DisableDefaultHitDirection = false
     Simulation.DisableDefaultSound = false
+
 end
 
-local function LoadProfile()
+local function EmptyArrays()
+    for k in pairs (Simulation.VisualEffectsShielded) do
+        Simulation.VisualEffectsShielded [k] = nil
+    end
+    for k in pairs (Simulation.SoundEffectsShielded) do
+        Simulation.SoundEffectsShielded [k] = nil
+    end
+    for k in pairs (Simulation.VisualEffectsUnshielded) do
+        Simulation.VisualEffectsUnshielded[k] = nil
+    end
+    for k in pairs (Simulation.SoundEffectsUnshielded) do
+        Simulation.SoundEffectsUnshielded[k] = nil
+    end
+    for k in pairs (Simulation.VisualEffectsTased) do
+        Simulation.VisualEffectsTased [k] = nil
+    end
+    for k in pairs (Simulation.SoundEffectsTased) do
+        Simulation.SoundEffectsTased [k] = nil
+    end
+    for k in pairs (Simulation.VisualEffectsDowned) do
+        Simulation.VisualEffectsDowned [k] = nil
+    end
+    for k in pairs (Simulation.SoundEffectsDowned) do
+        Simulation.SoundEffectsDowned [k] = nil
+    end
+
+end
+
+function Simulation:LoadProfile()
 
     local profileFile = io.open(Simulation._path .. PainSimulationOptions:GetProfile(),"r")
     log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
     local profile
     if profileFile then
+
+        EmptyArrays()
 
         profile = json.decode(profileFile:read("*all"))
         profileFile:close()
@@ -156,7 +190,9 @@ local function LoadProfile()
             log("painsimulation length of visuals: " .. #visuals)
             for i=1, #visuals do
                 local effectdata = visuals[i]
-                local v = VisualEffect:new("hudevent"..event.."vis"..i, effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer, effectdata.animate)
+                local v = VisualEffect:new("p"..PainSimulationOptions:GetProfileIndex()..
+                        "hudevent"..event.."vis"..i,
+                        effectdata.duration, effectdata.paths, effectdata.color, effectdata.layer, effectdata.animate)
                 table.insert(EventVisualEffects[event],v)
             end
             local sounds = eventprofile[event].sounds
@@ -180,6 +216,12 @@ local function LoadProfile()
             Simulation.DisableDefaultHitDirection = true
         end
 
+        if profile.immersivedodgesounds == "true" then
+            Simulation.EnableImmersiveDodgeSounds = true
+        else
+            Simulation.EnableImmersiveDodgeSounds = false
+        end
+        log("painsimulation visual in total: "..#Simulation.VisualEffectsShielded)
     end
 end
 
@@ -200,7 +242,7 @@ Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
     --log("painsimulation playerdamage init")
 
     --read profile json and run SetUpHudTexture for each texture read.
-    LoadProfile()
+    Simulation:LoadProfile()
     -- prepare hud element with the texture. hud made visble when player takes damage
 
     managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")

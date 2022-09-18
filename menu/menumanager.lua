@@ -23,6 +23,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
     MenuCallbackHandler.callback_pain_simulation_multiple_choice = function(self, item)
         PainSimulationOptions._settings.feedback_profile = item:value()
         PainSimulationOptions:save()
+        Simulation:LoadProfile()
     end
 
     function PainSimulationOptions:load()
@@ -70,4 +71,11 @@ function PainSimulationOptions:GetProfile()
         return "Profile0.json"
     end
     return PainSimulationOptions.profiles[PainSimulationOptions._settings.feedback_profile]
+end
+
+function PainSimulationOptions:GetProfileIndex()
+    if PainSimulationOptions._settings.enabled == false then
+        return 0
+    end
+    return PainSimulationOptions._settings.feedback_profile
 end

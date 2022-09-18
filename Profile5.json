@@ -13,8 +13,7 @@
     "sounds": [
       {
         "paths": [
-          "assets/sounds/downloaded/215162__otisjames__thud.ogg",
-          "assets/sounds/downloaded/215162__otisjames__thud_lower.ogg"
+          "assets/sounds/downloaded/shielded_damage.ogg"
         ]
       }
     ],
@@ -62,13 +61,7 @@
   "sounds": [
     {
       "paths": [
-        "assets/sounds/downloaded/visceralbulletimpact_1.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_2.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_3.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_4.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_5.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_6.ogg",
-        "assets/sounds/downloaded/visceralbulletimpact_7.ogg"
+        "assets/sounds/downloaded/unshielded_damage.ogg"
       ]
     }
   ],
@@ -155,5 +148,6 @@
       "patterns":  ["Heartbeat2"],
       "lowerbound": 1, "upperbound": 1,
       "duration": 0.8, "sleep": 1}
-},"disabledefaultsound" : "true", "disabledefaulthitdirection" : "false"
+},"disabledefaultsound" : "true", "disabledefaulthitdirection" : "false",
+  "immersivedodgesounds" : "true"
 }
