@@ -13,7 +13,12 @@
     "sounds": [
       {
         "paths": [
-          "assets/sounds/downloaded/shielded_damage.ogg"
+          "assets/sounds/downloaded/shielded_damage.ogg",
+          "assets/sounds/downloaded/shielded_damage_3.ogg",
+          "assets/sounds/downloaded/shielded_damage_4.ogg",
+          "assets/sounds/downloaded/shielded_damage_5.ogg",
+          "assets/sounds/downloaded/shielded_damage_6.ogg",
+          "assets/sounds/downloaded/shielded_damage_7.ogg"
         ]
       }
     ],
@@ -61,7 +66,12 @@
   "sounds": [
     {
       "paths": [
-        "assets/sounds/downloaded/unshielded_damage.ogg"
+        "assets/sounds/downloaded/unshielded_damage.ogg",
+        "assets/sounds/downloaded/unshielded_damage_3.ogg",
+        "assets/sounds/downloaded/unshielded_damage_4.ogg",
+        "assets/sounds/downloaded/unshielded_damage_5.ogg",
+        "assets/sounds/downloaded/unshielded_damage_6.ogg",
+        "assets/sounds/downloaded/unshielded_damage_7.ogg"
       ]
     }
   ],
