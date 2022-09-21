@@ -4,4 +4,11 @@
 	"pain_simulation_enabled_desc" : "Enables or disables the mod. Changes take place after restart.",
 	"pain_simulation_feedback_profile" : "Feedback Profile",
 	"pain_simulation_feedback_profile_desc" : "Profiles are json files that describe damage Feedback behavior",
+	"0 !v !h": "0 !v !h",
+    "1 !v haptic": "1 !v haptic",
+    "2 v h" : "2 v h",
+    "3 v+ h" : "3 v+ h",
+    "4 v h noArrows" : "4 v h noArrows",
+    "5 v h s" : "5 v h s",
+    "6 jumpscare v h s" : "6 jumpscare v h s"
 }

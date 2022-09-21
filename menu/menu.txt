@@ -30,6 +30,7 @@
         "3 v+ h"
         "4 v h noArrows"
         "5 v h s"
+        "6 jumpscare v h s"
       ],
       "value" : "feedback_profile",
     }
