@@ -24,7 +24,7 @@
     ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
-    "lowerbound": 0.15, "upperbound": 0.3,
+    "lowerbound": 0.6, "upperbound": 0.7,
     "duration": 0.5,
     "rotation": "true"}
   }

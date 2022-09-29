@@ -129,6 +129,7 @@ if not Simulation then
     --for tased
     Simulation.VisualEffectsTased = {}
     Simulation.SoundEffectsTased = {}
+    Simulation.IsCurrentlyBeingTased = false
 
     -- for dodge
     Simulation.EnableImmersiveDodgeSounds = false
@@ -167,13 +168,35 @@ local function EmptyArrays()
 
 end
 
+function Simulation:StopFeedback()
+    -- immediately stop all visuals.
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    for i=1, #Simulation.VisualEffectsDowned do
+        Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsUnshielded do
+        Simulation.VisualEffectsUnshielded[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsShielded do
+        Simulation.VisualEffectsShielded[i]:setVisible(false,hud)
+    end
+    Haptic:taseStop()
+    Haptic:revived()
+end
+
 function Simulation:LoadProfile()
 
     local profileFile = io.open(Simulation._path .. PainSimulationOptions:GetProfile(),"r")
     log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
+    Evaluation:levelLoad()
+    Haptic:levelLoad()
+
     local profile
     if profileFile then
-
+        Simulation:StopFeedback() -- stop any visuals and haptic that might be running before we loose references to them.
         EmptyArrays()
 
         profile = json.decode(profileFile:read("*all"))
@@ -239,19 +262,7 @@ end
 
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
-    --log("painsimulation playerdamage init")
-
     --read profile json and run SetUpHudTexture for each texture read.
     Simulation:LoadProfile()
-    -- prepare hud element with the texture. hud made visble when player takes damage
-
-    managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
-    managers.player:register_message(Message.OnPlayerDodge, "onDodge_pain_event", function()
-        --XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(snd_path)):set_volume(1)
-    end)
-
-    Evaluation:levelLoad()
-    Haptic:levelLoad()
-
     -- runs at level load
 end)

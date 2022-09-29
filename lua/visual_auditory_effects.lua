@@ -1,4 +1,7 @@
 local function RunRoutine(visualEffects, soundEffects)
+    if Simulation.IsCurrentlyBeingTased then
+        return -- showing hits while being tased kind of muddies the visuals. Rather just have tased.
+    end
 
     for i=1, #visualEffects do
         --log("painsimulation startEffect "..i)
@@ -15,7 +18,6 @@ function PlayerHitRoutineShielded(rotation)
     RunRoutine(Simulation.VisualEffectsShielded, Simulation.SoundEffectsShielded)
     Evaluation:shieldedHit()
     Haptic:damageTakenShielded(rotation)
-
 end
 
 function PlayerHitRoutineUnShielded(rotation)
@@ -37,9 +39,14 @@ function PlayerHitRoutineDowned()
     for i=1, #Simulation.VisualEffectsShielded do
         Simulation.VisualEffectsShielded[i]:setVisible(false,hud)
     end
+    for i=1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
+
+    end
+    Simulation.IsCurrentlyBeingTased = false
+
     Evaluation:downed()
     Haptic:downed()
-
 end
 
 function PlayerTasedRoutine()
@@ -48,6 +55,17 @@ function PlayerTasedRoutine()
     for i = 1, #Simulation.VisualEffectsTased do
         Simulation.VisualEffectsTased[i]:setVisible(true,hud)
     end
+    for i=1, #Simulation.VisualEffectsDowned do
+        Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsUnshielded do
+        Simulation.VisualEffectsUnshielded[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsShielded do
+        Simulation.VisualEffectsShielded[i]:setVisible(false,hud)
+    end
+    Simulation.IsCurrentlyBeingTased = true
+    Evaluation:tased()
     Haptic:tased()
 end
 
@@ -57,13 +75,16 @@ function PlayerStopTasedRoutine()
     for i = 1, #Simulation.VisualEffectsTased do
         Simulation.VisualEffectsTased[i]:setVisible(false,hud)
     end
-    Haptic:tased()
+    Simulation.IsCurrentlyBeingTased = false
 end
 
 function PlayerReviveRoutine()
     local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
     for i=1, #Simulation.VisualEffectsDowned do
         Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
     end
     Haptic:revived()
 end
@@ -154,10 +175,3 @@ if string.lower(RequiredScript) == "lib/managers/hudmanager" then
     end)
     -- runs on every game update
 end
-
-Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destory_pain_event", function(self)
-    Evaluation:levelQuit()
-    Haptic:levelQuit()
-    managers.player:unregister_message(Message.OnPlayerDodge, "onDodge_pain_event")
-    -- runs just before level is quit
-end)

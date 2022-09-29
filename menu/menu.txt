@@ -30,9 +30,20 @@
         "3 v+ h"
         "4 v h noArrows"
         "5 v h s"
-        "6 jumpscare v h s"
+        "6 v h- s"
+        "7 v !h s"
+        "Jump Scare"
       ],
       "value" : "feedback_profile",
-    }
+    },
+    {
+       "type": "toggle",
+        "id": "equip_primary_weapon",
+        "title": "equip_primary_weapon_title",
+        "description": "equip_primary_weapon_desc",
+        "callback": "callback_equip_primary_weapon",
+        "value" : "equip_primary_weapon",
+    },
+
   ]
 }

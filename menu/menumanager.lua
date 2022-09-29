@@ -3,11 +3,12 @@ if not PainSimulationOptions then
     PainSimulationOptions._settings_path = ModPath .. "menu/PainSimulationSettings.txt"
     PainSimulationOptions._menu_path = ModPath .. "menu/menu.txt"
     PainSimulationOptions.profiles = {
-        "Profile0.json", "Profile1.json", "Profile2.json", "Profile3.json", "Profile4.json", "Profile5.json", "Profile6.json"
+        "Profile0.json", "Profile1.json", "Profile2.json", "Profile3.json", "Profile4.json", "Profile5.json", "Profile6.json", "Profile7.json", "ProfileScare.json"
     }
     PainSimulationOptions._settings = {
         enabled = true,
-        feedback_profile = 1
+        feedback_profile = 1,
+        equip_primary_weapon = true
     }
     PainSimulationOptions.playertag = "Player1"
 end
@@ -24,6 +25,12 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
         PainSimulationOptions._settings.feedback_profile = item:value()
         PainSimulationOptions:save()
         Simulation:LoadProfile()
+    end
+
+    MenuCallbackHandler.callback_equip_primary_weapon = function(self, item)
+        local state = item:value() == "on"
+        PainSimulationOptions._settings.equip_primary_weapon = state
+        PainSimulationOptions:save()
     end
 
     function PainSimulationOptions:load()
@@ -64,6 +71,10 @@ end)
 
 function PainSimulationOptions:IsEnabled()
     return PainSimulationOptions._settings.enabled
+end
+
+function PainSimulationOptions:EquipPrimaryEnabled()
+    return PainSimulationOptions._settings.equip_primary_weapon
 end
 
 function PainSimulationOptions:GetProfile()

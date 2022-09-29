@@ -1,7 +1,7 @@
 {
 	"pain_simulation_title" : "Schmerz Simulation",
-	"pain_simulation_enabled_title" : "Enabled",
-	"pain_simulation_enabled_desc" : "Enables oder disables den mod. Änderung greifen erst nach Spiel neustart.",
+	"pain_simulation_enabled_title" : "Mod Aktiviert",
+	"pain_simulation_enabled_desc" : "Aktivier / Deaktiviert den mod. Änderung greifen erst nach Spiel neustart.",
 	"pain_simulation_feedback_profile" : "Feedback Profil",
 	"pain_simulation_feedback_profile_desc" : "Profile sind json Dateien die beschreiben, wie das Schadens-Feedback aussieht.",
 	"0 !v !h": "0 !v !h",
@@ -10,5 +10,9 @@
     "3 v+ h" : "3 v+ h",
     "4 v h noArrows" : "4 v h noArrows",
     "5 v h s" : "5 v h s",
-    "6 jumpscare v h s" : "6 jumpscare v h s"
+    "6 v h- s" : "6 v h- s",
+    "7 v !h s" : "7 v !h s",
+    "Jump Scare" : "Jump Scare",
+    "equip_primary_weapon_title" : "Rüste die Primäre Waffe aus",
+    "equip_primary_weapon_desc" : "Rüstet die Primare Waffe automatisch aus, wenn der Heist anfängt"
 }

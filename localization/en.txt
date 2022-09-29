@@ -1,6 +1,6 @@
 {
 	"pain_simulation_title" : "Pain Simulation",
-	"pain_simulation_enabled_title" : "Enabled",
+	"pain_simulation_enabled_title" : "Mod Enabled",
 	"pain_simulation_enabled_desc" : "Enables or disables the mod. Changes take place after restart.",
 	"pain_simulation_feedback_profile" : "Feedback Profile",
 	"pain_simulation_feedback_profile_desc" : "Profiles are json files that describe damage Feedback behavior",
@@ -10,5 +10,9 @@
     "3 v+ h" : "3 v+ h",
     "4 v h noArrows" : "4 v h noArrows",
     "5 v h s" : "5 v h s",
-    "6 jumpscare v h s" : "6 jumpscare v h s"
+    "6 v h- s" : "6 v h- s",
+    "7 v !h s" : "7 v !h s",
+    "Jump Scare" : "Jump Scare",
+    "equip_primary_weapon_title" : "Equip primary weapon",
+    "equip_primary_weapon_desc" : "Automatically equips the primary weapon at heist start"
 }
