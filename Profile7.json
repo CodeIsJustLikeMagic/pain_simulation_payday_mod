@@ -158,6 +158,6 @@
       "patterns":  ["Heartbeat2"],
       "lowerbound": 0.0, "upperbound": 0.0,
       "duration": 0.8, "sleep": 1}
-},"disabledefaultsound" : "true", "disabledefaulthitdirection" : "false",
+},"disabledefaultsound" : "true", "disabledefaulthitdirection" : "false", "disablescreenflashes" : "true",
   "immersivedodgesounds" : "true"
 }

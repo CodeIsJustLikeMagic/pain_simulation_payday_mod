@@ -11,5 +11,5 @@
 },"downed": {
   "visuals": [  ],
   "sounds": [  ]
-},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false"
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false", "disablescreenflashes" : "false"
 }

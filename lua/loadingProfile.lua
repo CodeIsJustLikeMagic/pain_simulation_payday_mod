@@ -137,6 +137,7 @@ if not Simulation then
     -- disable original
     Simulation.DisableDefaultHitDirection = false
     Simulation.DisableDefaultSound = false
+    Simulation.DisableScreenFlashes = false
 
 end
 
@@ -237,6 +238,13 @@ function Simulation:LoadProfile()
             log("PainSimulation should show hit direction")
         else
             Simulation.DisableDefaultHitDirection = true
+        end
+
+        if profile.disablescreenflashes == "true" then
+            Simulation.DisableScreenFlashes = true
+            log("PainSimulation should suppress screen flashes")
+        else
+            Simulation.DisableScreenFlashes = false
         end
 
         if profile.immersivedodgesounds == "true" then

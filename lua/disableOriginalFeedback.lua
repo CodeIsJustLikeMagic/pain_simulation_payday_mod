@@ -54,3 +54,18 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
     end
     -- runs when player gets damaged
 end
+
+--disable default full screen flashes
+-- thanks to "Reduced Hit Flash" Mod by unknown
+if string.lower(RequiredScript) == "core/lib/managers/coreenvironmentcontrollermanager" then
+    function CoreEnvironmentControllerManager:set_health_effect_value(health_effect_value)
+        if Simulation.DisableScreenFlashes then
+            log("painsimulation no screen flashes for you")
+            self._hit_amount = 0 -- 0.075 --Yellow/white armor impact flash per hit increment
+            self._health_effect_value = health_effect_value * 0 --0.2 --Red health impact flash
+        else
+            self._health_effect_value = health_effect_value
+        end
+    end
+
+end

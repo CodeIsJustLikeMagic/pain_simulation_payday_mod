@@ -133,5 +133,5 @@
       "patterns":  ["Heartbeat2"],
       "lowerbound": 1, "upperbound": 1,
       "duration": 0.8, "sleep": 1}
-},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "true"
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "true", "disablescreenflashes" : "true"
 }
