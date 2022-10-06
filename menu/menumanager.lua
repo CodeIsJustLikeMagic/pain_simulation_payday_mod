@@ -1,5 +1,6 @@
 if not PainSimulationOptions then
     _G.PainSimulationOptions = {}
+    PainSimulationOptions.modpath = ModPath
     PainSimulationOptions._settings_path = ModPath .. "menu/PainSimulationSettings.txt"
     PainSimulationOptions._menu_path = ModPath .. "menu/menu.txt"
     PainSimulationOptions.profiles = {
@@ -8,9 +9,9 @@ if not PainSimulationOptions then
     PainSimulationOptions._settings = {
         enabled = true,
         feedback_profile = 1,
-        equip_primary_weapon = true
+        equip_primary_weapon = true,
+        playertag = "Player1"
     }
-    PainSimulationOptions.playertag = "Player1"
 end
 
 Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", function(menu_manager, nodes)
@@ -33,6 +34,23 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
         PainSimulationOptions:save()
     end
 
+    MenuCallbackHandler.callback_pain_simulation_new_player_button = function()
+        PainSimulationOptions._settings.playertag = randomString(5)
+        PainSimulationOptions:save()
+    end
+
+
+    --local charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    function randomString(length)
+        math.randomseed(os.clock()^5)
+        local res = ""
+        for i = 1, length do
+            res = res .. string.char(math.random(97,122))
+        end
+        return res
+    end
+
+
     function PainSimulationOptions:load()
         local file = io.open(PainSimulationOptions._settings_path,'r')
         if file then
@@ -44,6 +62,9 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
         else
             PainSimulationOptions:save()
         end
+        LocalizationManager:add_localized_strings({
+            ["pain_simulation_new_player_button"] = "Playertag: "..PainSimulationOptions._settings.playertag,
+        })
     end
 
     function PainSimulationOptions:save()
@@ -52,6 +73,9 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
             file:write(json.encode(PainSimulationOptions._settings))
             file:close()
         end
+        LocalizationManager:add_localized_strings({
+            ["pain_simulation_new_player_button"] = "Playertag: "..PainSimulationOptions._settings.playertag,
+        })
     end
 
     function PainSimulationOptions:reset_option()
@@ -66,6 +90,10 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
     PainSimulationOptions:load()
 
     MenuHelper:LoadFromJsonFile(PainSimulationOptions._menu_path, PainSimulationOptions, PainSimulationOptions._settings)
+
+    if Haptic == nil then
+        dofile(PainSimulationOptions.modpath.."lua/hapticMessages.lua")
+    end
 
 end)
 
@@ -90,3 +118,8 @@ function PainSimulationOptions:GetProfileIndex()
     end
     return PainSimulationOptions._settings.feedback_profile
 end
+
+function PainSimulationOptions:Playertag()
+    return PainSimulationOptions._settings.playertag
+end
+

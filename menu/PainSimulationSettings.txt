@@ -1,1 +1,1 @@
-{"feedback_profile":3,"enabled":true,"equip_primary_weapon":true}
+{"playertag":"icetest","feedback_profile":3,"enabled":true,"equip_primary_weapon":true}

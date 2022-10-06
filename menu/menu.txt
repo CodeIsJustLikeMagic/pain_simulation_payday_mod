@@ -18,6 +18,13 @@
       "size" : 20,
     },
     {
+      "type": "button",
+      "id" : "new_player_button",
+      "title" : "pain_simulation_new_player_button"
+      "description" : "pain_simulation_new_player_button_desc"
+      "callback" : "callback_pain_simulation_new_player_button"
+    },
+    {
       "type": "multiple_choice",
       "id": "feedback_profile",
       "title": "pain_simulation_feedback_profile",

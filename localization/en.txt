@@ -14,5 +14,7 @@
     "7 v !h s" : "7 v !h s",
     "Jump Scare" : "Jump Scare",
     "equip_primary_weapon_title" : "Equip primary weapon",
-    "equip_primary_weapon_desc" : "Automatically equips the primary weapon at heist start"
+    "equip_primary_weapon_desc" : "Automatically equips the primary weapon at heist start",
+    "pain_simulation_new_player_button" : "Neuer Proband",
+    "pain_simulation_new_player_button_desc" : "Generiert neuen playertag für Evaluierung"
 }

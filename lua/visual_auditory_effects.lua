@@ -89,37 +89,63 @@ function PlayerReviveRoutine()
     Haptic:revived()
 end
 
-Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
-    PlayerHitRoutineDowned()
-    Evaluation:hpAndArmor()
-    -- runs when player is downed (0 hp and 0 armor)
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "on_downed","on_downed_pain_event", function(self)
+        PlayerHitRoutineDowned()
+        Evaluation:hpAndArmor()
+        -- runs when player is downed (0 hp and 0 armor)
+    end)
+    
+end
+
+Hooks:PostHook(HUDPlayerCustody, "init", "HUDPlayerCustody_init_pain_event", function(self,hud)
+    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+    for i=1, #Simulation.VisualEffectsDowned do
+        Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
+    end
+    for i=1, #Simulation.VisualEffectsTased do
+        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
+    end
+    Haptic:revived()
+    --  if player is in custody stop
 end)
 
-Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
-    PlayerReviveRoutine()
-    log("painsimulation player revived by ally")
-    Evaluation:hpAndArmor()
-    Evaluation:revived()
-    -- runs when player is helped after being downed
-end)
 
-Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
-    log("_regenerate_armor")
-    Evaluation:regenerateArmor()
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "revive", "revive_pain_event", function(self, silent)
+        PlayerReviveRoutine()
+        log("painsimulation player revived by ally")
+        Evaluation:hpAndArmor()
+        Evaluation:revived()
+        -- runs when player is helped after being downed
+    end)
+end
 
-    -- armor regenerating itself after not being attacked for a few seconds
-end)
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
+        log("_regenerate_armor")
+        Evaluation:regenerateArmor()
 
-Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
-    PlayerTasedRoutine()
-    Evaluation:hpAndArmor()
-    Evaluation:tased()
-end)
+        -- armor regenerating itself after not being attacked for a few seconds
+    end)
 
-Hooks:PostHook(PlayerDamage, "erase_tase_data", "erase_tase_data_pain_event", function(self, non_lethal)
-    PlayerStopTasedRoutine()
-    Haptic:taseStop()
-end)
+end
+
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
+        PlayerTasedRoutine()
+        Evaluation:hpAndArmor()
+        Evaluation:tased()
+    end)
+
+end
+
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "erase_tase_data", "erase_tase_data_pain_event", function(self, non_lethal)
+        PlayerStopTasedRoutine()
+        Haptic:taseStop()
+    end)
+end
 
 Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
     Evaluation:hpAndArmor()
@@ -174,4 +200,12 @@ if string.lower(RequiredScript) == "lib/managers/hudmanager" then
         Effect_update(t, dt)
     end)
     -- runs on every game update
+end
+
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destroy_pain_event", function(self)
+        Evaluation:saveEvalFile()
+        Haptic:stop_feedback()
+    end)
+
 end

@@ -2,7 +2,23 @@
 
 if not Evaluation then
     _G.Evaluation = {}
+    Evaluation.hp = 0
+    Evaluation.armor = 0
 end
+
+Hooks:PostHook(HUDTeammate, "set_armor", "set_armor_pain_event", function(self, data, ...)
+    local Value = math.clamp(data.current / data.total, 0, 1)
+    local real_value = math.round((data.total * 10) * Value)
+    Evaluation.armor = real_value
+    -- this shouldnt run but it does
+end)
+
+Hooks:PostHook(HUDTeammate, "set_health", "set_health_pain_event", function(self, data, ...)
+    local Value = math.clamp(data.current / data.total, 0, 1)
+    local real_value = math.round((data.total * 10) * Value)
+    Evaluation.hp = real_value
+end)
+
 
 Hooks:PostHook(PlayerManager, "on_killshot", "on_killshot_pain_event", function(self, killed_unit, variant, headshot, weapon_id, ...)
     local player_unit = self:player_unit()
@@ -17,6 +33,7 @@ Hooks:PostHook(PlayerManager, "on_killshot", "on_killshot_pain_event", function(
 
     dohttpreq("http://localhost:8001/evaluate/killshot", function(data2)
     end)
+    -- works
 end)
 
 function Evaluation:unshieldedHit()
@@ -39,30 +56,46 @@ function Evaluation:revived()
     end)
 end
 
-function Evaluation:levelLoad()
-    dohttpreq("http://localhost:8001/evaluate/levelload/"..PainSimulationOptions:GetProfile().."?playertag=".. PainSimulationOptions.playertag, function(data2)
+function Evaluation:loadProfile()
+    dohttpreq("http://localhost:8001/evaluate/loadprofile/"..PainSimulationOptions:GetProfile().."?playertag=".. PainSimulationOptions:Playertag(), function(data2)
     end)
+    -- evaluation server will make a new csv file.
 end
 
-function Evaluation:levelQuit()
-    dohttpreq("http://localhost:8001/evaluate/levelquit", function(data2)
+function Evaluation:saveEvalFile()
+    if managers.statistics:session_hit_accuracy() == nil then
+        log("painevent no active game to get stats from or to save eval file for")
+        return
+    end
+    log("painevent save Eval File")
+
+    dohttpreq("http://localhost:8001/evaluate/saveevalfile/" .. managers.statistics:session_hit_accuracy() ..
+            "?session_total_downed=" .. managers.statistics:total_downed() ..
+            "&session_total_kills=" .. managers.statistics:session_total_kills() ..
+            "&session_total_head_shots=" .. managers.statistics:session_total_head_shots() ..
+            "&session_total_specials_kills=" .. managers.statistics:session_total_specials_kills() ..
+            "&session_civilian_kills=" .. managers.statistics:session_total_civilian_kills() ..
+    "", function(data2)
     end)
 end
 
 function Evaluation:hpAndArmor()
     log("painevent Hp and Armor save")
-    dohttpreq("http://localhost:8001/evaluate/sethp/"..MyPlayer.hp.."?armor="..MyPlayer.armor, function(data2)
+    dohttpreq("http://localhost:8001/evaluate/sethp/"..Evaluation.hp.."?armor="..Evaluation.armor, function(data2)
     end)
+    -- works
 end
 
 function Evaluation:regenerateArmor()
     dohttpreq("http://localhost:8001/evaluate/regeneratearmor", function(data2)
     end)
+    -- works
 end
 
 function Evaluation:tased()
     dohttpreq("http://localhost:8001/evaluate/tased", function(data2)
     end)
+    -- works
 end
 
 
@@ -72,6 +105,7 @@ Hooks:PostHook(PlayerDamage, "restore_health","restore_health_pain_event", funct
     end)
     Evaluation:hpAndArmor()
     -- this runs after armor regenerateArmor a few times
+    -- works
 end)
 
 Hooks:PostHook(PlayerDamage, "recover_health","recover_health_event", function(self)
@@ -99,16 +133,29 @@ Hooks:PostHook(HUDHitConfirm, "on_hit_confirmed","on_hit_confirmed_pain_event", 
     log("painevent on hit confirmed")
     dohttpreq("http://localhost:8001/evaluate/enemy_hit", function(data2)
     end)
+    -- works
 end)
 
 Hooks:PostHook(HUDHitConfirm, "on_headshot_confirmed","on_headshot_confirmed_pain_event", function(self, damage_scale)
-    log("painevent on headshot confirmed")
+    log("painevent HudHitConfirm on headshot confirmed")
+    dohttpreq("http://localhost:8001/evaluate/enemy_headshot", function(data2)
+    end)
+end)
+
+Hooks:PostHook(HUDManager, "on_headshot_confirmed","on_headshot_confirmed_pain_event2", function(self, damage_scale)
+    log("painevent HudManager on headshot confirmed")
     dohttpreq("http://localhost:8001/evaluate/enemy_headshot", function(data2)
     end)
 end)
 
 Hooks:PostHook(HUDHitConfirm, "on_crit_confirmed","on_crit_confirmed_pain_event", function(self, damage_scale)
     log("painevent on crit confirmed")
+    dohttpreq("http://localhost:8001/evaluate/enemy_crit", function(data2)
+    end)
+end)
+
+Hooks:PostHook(HUDManager, "on_crit_confirmed","on_crit_confirmed_pain_event", function(self, damage_scale)
+    log("painevent HUDManager on crit confirmed")
     dohttpreq("http://localhost:8001/evaluate/enemy_crit", function(data2)
     end)
 end)

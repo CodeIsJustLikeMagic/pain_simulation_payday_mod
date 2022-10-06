@@ -184,16 +184,18 @@ function Simulation:StopFeedback()
     for i=1, #Simulation.VisualEffectsShielded do
         Simulation.VisualEffectsShielded[i]:setVisible(false,hud)
     end
-    Haptic:taseStop()
-    Haptic:revived()
+    Haptic:stop_feedback()
 end
 
 function Simulation:LoadProfile()
-
+    if managers.hud == nil then
+        return -- we are in main menu. Dont load when not in heist.
+    end
     local profileFile = io.open(Simulation._path .. PainSimulationOptions:GetProfile(),"r")
     log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
-    Evaluation:levelLoad()
-    Haptic:levelLoad()
+    Evaluation:saveEvalFile()
+    Evaluation:loadProfile()
+    Haptic:loadProfile()
 
     local profile
     if profileFile then
@@ -267,6 +269,9 @@ for _, file in pairs(file.GetFiles(Simulation._path.. "assets/guis/textures/")) 
 end
 --log("painsimulation successfully loaded texture files")
 
+if Haptic == nil then
+    dofile(PainSimulationOptions.modpath.."lua/hapticMessages.lua")
+end
 
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
