@@ -77,6 +77,9 @@ function Evaluation:saveEvalFile()
     end
     log("painevent save Eval File")
 
+    dohttpreq("http://localhost:8001/evaluate/saveevalfile", function(data2)
+    end)
+    return
     dohttpreq("http://localhost:8001/evaluate/saveevalfile/" .. managers.statistics:session_hit_accuracy() ..
             "?session_total_downed=" .. managers.statistics:total_downed() ..
             "&session_total_kills=" .. managers.statistics:session_total_kills() ..
@@ -84,7 +87,9 @@ function Evaluation:saveEvalFile()
             "&session_total_specials_kills=" .. managers.statistics:session_total_specials_kills() ..
             "&session_civilian_kills=" .. managers.statistics:session_total_civilian_kills() ..
     "", function(data2)
-    end)
+    end) -- sadly cannot get the session stats because it hangs the game
+    -- plus session stats apply to the entire heist but profile can be changed mid heist.
+    -- so I can't really use the session statistics at all.
 end
 
 function Evaluation:hpAndArmor()
@@ -158,37 +163,12 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudhitconfirmed" then
 
 end
 
-if string.lower(RequiredScript) == "lib/managers/hud/hudhitconfirmed" then
-    Hooks:PostHook(HUDHitConfirm, "on_headshot_confirmed","on_headshot_confirmed_pain_event", function(self, damage_scale)
-        log("painevent HudHitConfirm on headshot confirmed")
+-- thanks to https://modworkshop.net/mod/16984 by Schmuddel for finding which one
+-- of the many many headshot functions is actually run
+if string.lower(RequiredScript) == "lib/managers/playermanager" then
+    Hooks:PostHook(PlayerManager, "on_headshot_dealt","on_headshot_dealt_pain_event", function(self)
+        log("painevent PlayerManager on headshot dealt")
         dohttpreq("http://localhost:8001/evaluate/enemy_headshot", function(data2)
-        end)
-    end)
-
-end
-
-if string.lower(RequiredScript) == "lib/managers/hudmanagerpd2" then
-    log("does this run ??????????????????????")
-    Hooks:PostHook(HUDManager, "on_headshot_confirmed","on_headshot_confirmed_pain_event2", function(self, damage_scale)
-        log("painevent HudManager on headshot confirmed")
-        dohttpreq("http://localhost:8001/evaluate/enemy_headshot", function(data2)
-        end)
-    end)
-
-end
-
-if string.lower(RequiredScript) == "lib/managers/hud/hudhitconfirmed" then
-    Hooks:PostHook(HUDHitConfirm, "on_crit_confirmed","on_crit_confirmed_pain_event", function(self, damage_scale)
-        log("painevent on crit confirmed")
-        dohttpreq("http://localhost:8001/evaluate/enemy_crit", function(data2)
-        end)
-    end)
-end
-
-if string.lower(RequiredScript) == "lib/managers/hudmanagerpd2" then
-    Hooks:PostHook(HUDManager, "on_crit_confirmed","on_crit_confirmed_pain_event", function(self, damage_scale)
-        log("painevent HUDManager on crit confirmed")
-        dohttpreq("http://localhost:8001/evaluate/enemy_crit", function(data2)
         end)
     end)
 end
