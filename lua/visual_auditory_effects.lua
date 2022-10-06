@@ -95,20 +95,23 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
         Evaluation:hpAndArmor()
         -- runs when player is downed (0 hp and 0 armor)
     end)
-    
+
 end
 
-Hooks:PostHook(HUDPlayerCustody, "init", "HUDPlayerCustody_init_pain_event", function(self,hud)
-    local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-    for i=1, #Simulation.VisualEffectsDowned do
-        Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
-    end
-    for i=1, #Simulation.VisualEffectsTased do
-        Simulation.VisualEffectsTased[i]:setVisible(false,hud)
-    end
-    Haptic:revived()
-    --  if player is in custody stop
-end)
+if string.lower(RequiredScript) == "lib/managers/hud/hudplayercustody" then
+    Hooks:PostHook(HUDPlayerCustody, "init", "HUDPlayerCustody_init_pain_event", function(self,hud)
+        local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+        for i=1, #Simulation.VisualEffectsDowned do
+            Simulation.VisualEffectsDowned[i]:setVisible(false,hud)
+        end
+        for i=1, #Simulation.VisualEffectsTased do
+            Simulation.VisualEffectsTased[i]:setVisible(false,hud)
+        end
+        Haptic:revived()
+        --  if player is in custody stop
+    end)
+
+end
 
 
 if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
@@ -147,41 +150,44 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
     end)
 end
 
-Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
-    Evaluation:hpAndArmor()
-    --run our visual effects
-    log("damage origin: "..damage_origin)
-    log("damage_type: "..damage_type)
+if string.lower(RequiredScript) == "lib/managers/hud/hudhitdirection" then
+    Hooks:PostHook(HUDHitDirection, "_add_hit_indicator", "_add_hit_indicator_pain_event", function(self, damage_origin, damage_type, fixed_angle)
+        Evaluation:hpAndArmor()
+        --run our visual effects
+        log("damage origin: "..damage_origin)
+        log("damage_type: "..damage_type)
 
-    -- figure out rotation
+        -- figure out rotation
 
-    local rotation = 0
-    if managers.player:player_unit() then
-        local ply_camera = managers.player:player_unit():camera()
-        if ply_camera then
-            local target_vec = ply_camera:position() - damage_origin
-            local angle = target_vec:to_polar_with_reference(ply_camera:forward(), math.UP).spin
-            if fixed_angle ~= nil then
-                angle = fixed_angle
+        local rotation = 0
+        if managers.player:player_unit() then
+            local ply_camera = managers.player:player_unit():camera()
+            if ply_camera then
+                local target_vec = ply_camera:position() - damage_origin
+                local angle = target_vec:to_polar_with_reference(ply_camera:forward(), math.UP).spin
+                if fixed_angle ~= nil then
+                    angle = fixed_angle
+                end
+                -- rotation that is used for viusal direction indicators at the middle of the screen
+                rotation = 90 - angle
+
+                -- change rotation to fit bhaptics :)
+                rotation = 180 - rotation + 90
             end
-            -- rotation that is used for viusal direction indicators at the middle of the screen
-            rotation = 90 - angle
-
-            -- change rotation to fit bhaptics :)
-            rotation = 180 - rotation + 90
         end
-    end
-    log("rotation is "..rotation)
+        log("rotation is "..rotation)
 
-    if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
-    log("painsimulation run hit routine unshielded")
-    PlayerHitRoutineUnShielded(rotation)
-    else if damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
-    log("painsimulation run hit routine shielded")
-    PlayerHitRoutineShielded(rotation)
-    end
-    end
-end)
+        if damage_type == HUDHitDirection.DAMAGE_TYPES.HEALTH then
+            log("painsimulation run hit routine unshielded")
+            PlayerHitRoutineUnShielded(rotation)
+        else if damage_type == HUDHitDirection.DAMAGE_TYPES.ARMOUR then
+            log("painsimulation run hit routine shielded")
+            PlayerHitRoutineShielded(rotation)
+        end
+        end
+    end)
+
+end
 
 local function Effect_update(t, dt)
 
