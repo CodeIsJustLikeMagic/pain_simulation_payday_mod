@@ -12,7 +12,7 @@ function VisualEffect:new(name, duration, paths, color, layer, animate)
     visef.layer = layer
 
     if animate == Nil then
-        log("visual effect "..name.." no animate")
+        --log("visual effect "..name.." no animate")
         visef.animate = false
     else
         visef.animate = true
@@ -47,7 +47,7 @@ end
 function VisualEffect:startEffekt()
     local texture_num = math.random(#self.timers)
     self.timers[texture_num] = self.duration
-    log("painsimulation startEffekt of "..self.hudnames[texture_num])
+    --log("painsimulation startEffekt of "..self.hudnames[texture_num])
 end
 
 function VisualEffect:update(hud)
@@ -109,9 +109,9 @@ end
 
 if not Simulation then
     _G.Simulation = {}
-    log("Creating Pain Simulation")
+    --log("Creating Pain Simulation")
     Simulation._path = ModPath
-    log("Path is ".. Simulation._path)
+    --log("Path is ".. Simulation._path)
 
     --for shielded hit
     Simulation.VisualEffectsShielded = {}
@@ -237,14 +237,14 @@ function Simulation:LoadProfile()
 
         if profile.disabledefaulthitdirection == "false" then
             Simulation.DisableDefaultHitDirection = false
-            log("PainSimulation should show hit direction")
+            --log("PainSimulation should show hit direction")
         else
             Simulation.DisableDefaultHitDirection = true
         end
 
         if profile.disablescreenflashes == "true" then
             Simulation.DisableScreenFlashes = true
-            log("PainSimulation should suppress screen flashes")
+            --log("PainSimulation should suppress screen flashes")
         else
             Simulation.DisableScreenFlashes = false
         end
@@ -254,7 +254,6 @@ function Simulation:LoadProfile()
         else
             Simulation.EnableImmersiveDodgeSounds = false
         end
-        log("painsimulation visual in total: "..#Simulation.VisualEffectsShielded)
     end
 end
 
@@ -263,19 +262,21 @@ if blt.xaudio then
     log("painsimulation setup xAudio")
 end
 
--- load texture files so game can find them later
+-- load texture files so game can find them later. Unknown / unloaded texture will show up as a checkerboard pattern with 4 tiles
 for _, file in pairs(file.GetFiles(Simulation._path.. "assets/guis/textures/")) do
     DB:create_entry(Idstring("texture"), Idstring("assets/guis/textures/".. file:gsub(".texture", "")), Simulation._path.. "assets/guis/textures/".. file)
 end
 --log("painsimulation successfully loaded texture files")
 
+-- hapticMessages.lua doesn't have any hooks so it doest get called by the BLTbasemod.
+-- so I have to load and run in myself
 if Haptic == nil then
     dofile(PainSimulationOptions.modpath.."lua/hapticMessages.lua")
 end
 
 
 Hooks:PostHook(PlayerDamage, "init", "init_pain_event", function(self)
-    --read profile json and run SetUpHudTexture for each texture read.
+    --read profile json and set up huds for visuals as well as learn which sounds to play
     Simulation:LoadProfile()
     -- runs at level load
 end)
