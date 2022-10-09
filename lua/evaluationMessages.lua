@@ -70,26 +70,16 @@ function Evaluation:loadProfile()
     -- evaluation server will make a new csv file.
 end
 
+function Evaluation:UpdatePlayertag()
+    dohttpreq("http://localhost:8001/evaluate/change_playertag/"..PainSimulationOptions:Playertag(), function(data2)
+    end)
+end
+
 function Evaluation:saveEvalFile()
-    if managers.statistics:session_hit_accuracy() == nil then
-        log("painevent no active game to get stats from or to save eval file for")
-        return
-    end
     log("save Eval File")
 
     dohttpreq("http://localhost:8001/evaluate/saveevalfile", function(data2)
     end)
-    return
-    dohttpreq("http://localhost:8001/evaluate/saveevalfile/" .. managers.statistics:session_hit_accuracy() ..
-            "?session_total_downed=" .. managers.statistics:total_downed() ..
-            "&session_total_kills=" .. managers.statistics:session_total_kills() ..
-            "&session_total_head_shots=" .. managers.statistics:session_total_head_shots() ..
-            "&session_total_specials_kills=" .. managers.statistics:session_total_specials_kills() ..
-            "&session_civilian_kills=" .. managers.statistics:session_total_civilian_kills() ..
-    "", function(data2)
-    end) -- sadly cannot get the session stats because it hangs the game
-    -- plus session stats apply to the entire heist but profile can be changed mid heist.
-    -- so I can't really use the session statistics at all.
 end
 
 function Evaluation:hpAndArmor()
@@ -206,12 +196,31 @@ end
 -- runs everytime the player shoots any weapon
 if string.lower(RequiredScript) == "lib/managers/statisticsmanager" then
     Hooks:PostHook(StatisticsManager, "shot_fired", "shot_fired_pain_simulation", function(self, data)
-        log("hoho, you are approaching me? Well I can't kick the shit out of the <StatisticsManager shot fired> if I don't!")
+        -- log("hoho, you are approaching me? Well I can't kick the shit out of the <StatisticsManager shot fired> if I don't!")
         local hit_count = 0
         if data.hit then
             hit_count = data.hit_count or 1
         end
         dohttpreq("http://localhost:8001/evaluate/weapon_fired/"..hit_count, function(data2)
         end)
+    end)
+
+    Hooks:PostHook(StatisticsManager, "health_subtracted", "health_subtracted_pain_simulation", function(self, amount)
+        dohttpreq("http://localhost:8001/evaluate/health_subtracted/"..amount, function(data2)
+        end)
+    end)
+end
+
+
+if string.lower(RequiredScript) == "lib/units/beings/player/states/playerstandard" then
+    Hooks:PostHook(PlayerStandard, "_stance_entered", "_stance_entered_pain_simulation", function(self, unequipped)
+        log("PlayerStandard _stance_entered")
+        local stances = nil
+        stances = (self:_is_meleeing() or self:_is_throwing_projectile()) and tweak_data.player.stances.default or tweak_data.player.stances[stance_id] or tweak_data.player.stances.default
+        if stances.crouched then
+            log("player is crouched")
+        else
+            log("player is not crouched")
+        end
     end)
 end

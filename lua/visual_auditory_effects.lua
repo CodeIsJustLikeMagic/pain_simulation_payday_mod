@@ -212,6 +212,9 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
     Hooks:PreHook(PlayerDamage, "pre_destroy", "pre_destroy_pain_event", function(self)
         Evaluation:saveEvalFile()
         Haptic:stop_feedback()
+        Simulation.HeistRunning = false
+        -- now entering main menu / heist prep page
+        -- loadProfile will be run before (re)starting heist
     end)
 
 end

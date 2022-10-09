@@ -139,6 +139,7 @@ if not Simulation then
     Simulation.DisableDefaultSound = false
     Simulation.DisableScreenFlashes = false
 
+    Simulation.HeistRunning = false
 end
 
 local function EmptyArrays()
@@ -193,9 +194,13 @@ function Simulation:LoadProfile()
     end
     local profileFile = io.open(Simulation._path .. PainSimulationOptions:GetProfile(),"r")
     log("PainSimulation Loading Profile "..PainSimulationOptions:GetProfile())
-    Evaluation:saveEvalFile()
+    if Simulation.HeistRunning then
+        Evaluation:saveEvalFile()
+        -- dont save if we were previously in main menu. Only save if we switch profile mid heist
+    end
     Evaluation:loadProfile()
     Haptic:loadProfile()
+    Simulation.HeistRunning = true
 
     local profile
     if profileFile then

@@ -36,6 +36,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
 
     MenuCallbackHandler.callback_pain_simulation_new_player_button = function()
         PainSimulationOptions._settings.playertag = randomString(5)
+        Evaluation:UpdatePlayertag()
         PainSimulationOptions:save()
     end
 
