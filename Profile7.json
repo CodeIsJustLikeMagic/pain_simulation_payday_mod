@@ -7,6 +7,14 @@
           "assets/guis/textures/effectsdome edges"
         ],
         "color": "98dcf0",
+        "layer": 2
+      },
+      {
+        "duration": 0.1,
+        "paths": [
+          "assets/guis/textures/effectsfull screen 25"
+        ],
+        "color": "98dcf0",
         "layer": 1
       }
     ],
@@ -36,7 +44,7 @@
         "assets/guis/textures/effectsblood splatter curtain"
       ],
       "color": "240100",
-      "layer": 4
+      "layer": 5
     },
     {
       "duration": 1,
@@ -44,7 +52,7 @@
         "assets/guis/textures/effectsblurred blood splatter curtain"
       ],
       "color": "240100",
-      "layer": 3
+      "layer": 4
     },
     {
       "duration": 1.5,
@@ -52,12 +60,20 @@
         "assets/guis/textures/effectsblurry tex curtain"
       ],
       "color": "5f1000",
-      "layer": 2
+      "layer": 3
     },
     {
       "duration": 0.3,
       "paths": [
         "assets/guis/textures/effectsconcentrated edges"
+      ],
+      "color": "5f1000",
+      "layer": 2
+    },
+    {
+      "duration": 0.1,
+      "paths": [
+        "assets/guis/textures/effectsfull screen 65"
       ],
       "color": "5f1000",
       "layer": 1
@@ -98,24 +114,15 @@
       ],
       "color": "00d6ff",
       "layer": 10
-    }
-  ],
-  "sounds": [
+    },
     {
+      "duration": 100,
       "paths": [
-        "assets/sounds/squelsh hit__.ogg"
-      ]
-    }
-  ],
-  "haptic": {
-    "patterns": [
-      "Electric_front_and_back"
-    ],
-    "lowerbound": 0,
-    "upperbound": 0,
-    "duration": 2,
-    "sleep": 2.01
-  }
+        "assets/guis/textures/effectsfull screen 50"
+      ],
+      "color": "000000",
+      "layer": 9
+    },
 },
   "downed": {
   "visuals": [

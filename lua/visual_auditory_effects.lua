@@ -1,13 +1,12 @@
 local function RunRoutine(visualEffects, soundEffects)
-    if Simulation.IsCurrentlyBeingTased then
-        return -- showing hits while being tased kind of muddies the visuals. Rather just have tased.
+    if not Simulation.IsCurrentlyBeingTased then
+        for i=1, #visualEffects do
+            --log("painsimulation startEffect "..i)
+            visualEffects[i]:startEffekt()
+            end
+        -- showing hits while being tased kind of muddies the visuals. Rather just have tased.
     end
-
-    for i=1, #visualEffects do
-        --log("painsimulation startEffect "..i)
-        visualEffects[i]:startEffekt()
-    end
-
+    -- play sound even when tased
     for i=1, #soundEffects do
         XAudio.UnitSource:new(XAudio.PLAYER, XAudio.Buffer:new(soundEffects[i]:getSoundPath())):set_volume(1)
     end

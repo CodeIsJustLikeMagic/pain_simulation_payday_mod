@@ -10,9 +10,9 @@
         "layer": 2
       },
       {
-        "duration": 0.5,
+        "duration": 0.2,
         "paths": [
-          "assets/guis/textures/effectsfull screen 50"
+          "assets/guis/textures/effectsfull screen 65"
         ],
         "color": "e88d68",
         "layer": 1
@@ -87,11 +87,11 @@
       "layer": 2
     },
     {
-      "duration": 0.5,
+      "duration": 0.2,
       "paths": [
-        "assets/guis/textures/effectsfull screen 50"
+        "assets/guis/textures/effectsfull screen 65"
       ],
-      "color": "b6847c",
+      "color": "3f0700",
       "layer": 1
     }
   ],
@@ -120,6 +120,14 @@
       ],
       "color": "00abff",
       "layer": 10
+    },
+    {
+      "duration": 100,
+      "paths": [
+        "assets/guis/textures/effectsfull screen 50"
+      ],
+      "color": "000000",
+      "layer": 9
     }
   ],
   "sounds": [

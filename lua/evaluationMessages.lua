@@ -39,7 +39,6 @@ if string.lower(RequiredScript) == "lib/managers/playermanager" then
 
         dohttpreq("http://localhost:8001/evaluate/killshot", function(data2)
         end)
-        -- works
     end)
 
 end
@@ -86,19 +85,16 @@ function Evaluation:hpAndArmor()
     log("painevent Hp and Armor save")
     dohttpreq("http://localhost:8001/evaluate/sethp/"..Evaluation.hp.."?armor="..Evaluation.armor, function(data2)
     end)
-    -- works
 end
 
 function Evaluation:regenerateArmor()
     dohttpreq("http://localhost:8001/evaluate/regeneratearmor", function(data2)
     end)
-    -- works
 end
 
 function Evaluation:tased()
     dohttpreq("http://localhost:8001/evaluate/tased", function(data2)
     end)
-    -- works
 end
 
 if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
@@ -108,7 +104,6 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
         end)
         Evaluation:hpAndArmor()
         -- this runs after armor regenerateArmor a few times
-        -- works
     end)
 
 end
@@ -148,13 +143,12 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudhitconfirmed" then
         log("on hit confirmed")
         dohttpreq("http://localhost:8001/evaluate/enemy_hit", function(data2)
         end)
-        -- works
     end)
 
 end
 
 -- thanks to https://modworkshop.net/mod/16984 by Schmuddel for finding which one
--- of the many many headshot functions is actually run
+-- of the many many headshot functions is actually run by the game
 if string.lower(RequiredScript) == "lib/managers/playermanager" then
     Hooks:PostHook(PlayerManager, "on_headshot_dealt","on_headshot_dealt_pain_simulation", function(self)
         log("on headshot dealt")
@@ -214,13 +208,12 @@ end
 
 if string.lower(RequiredScript) == "lib/units/beings/player/states/playerstandard" then
     Hooks:PostHook(PlayerStandard, "_stance_entered", "_stance_entered_pain_simulation", function(self, unequipped)
-        log("PlayerStandard _stance_entered")
-        local stances = nil
-        stances = (self:_is_meleeing() or self:_is_throwing_projectile()) and tweak_data.player.stances.default or tweak_data.player.stances[stance_id] or tweak_data.player.stances.default
-        if stances.crouched then
-            log("player is crouched")
+        if self._state_data.ducking then
+            dohttpreq("http://localhost:8001/evaluate/stance_crouched/"..1, function(data2)
+            end)
         else
-            log("player is not crouched")
+            dohttpreq("http://localhost:8001/evaluate/stance_crouched/"..0, function(data2)
+            end)
         end
     end)
 end

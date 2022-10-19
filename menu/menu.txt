@@ -25,6 +25,7 @@
       "callback" : "callback_pain_simulation_new_player_button"
     },
     {
+    
       "type": "multiple_choice",
       "id": "feedback_profile",
       "title": "pain_simulation_feedback_profile",
