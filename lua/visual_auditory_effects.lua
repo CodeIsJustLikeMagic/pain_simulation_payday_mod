@@ -124,16 +124,6 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
 end
 
 if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
-    Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
-        --log("_regenerate_armor")
-        Evaluation:regenerateArmor()
-
-        -- armor regenerating itself after not being attacked for a few seconds
-    end)
-
-end
-
-if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
     Hooks:PostHook(PlayerDamage, "on_tased", "on_tased_pain_event", function(self, non_lethal)
         PlayerTasedRoutine()
         Evaluation:hpAndArmor()

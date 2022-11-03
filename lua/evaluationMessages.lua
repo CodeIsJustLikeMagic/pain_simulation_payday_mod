@@ -11,7 +11,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudteammate" then
         local Value = math.clamp(data.current / data.total, 0, 1)
         local real_value = math.round((data.total * 10) * Value)
         Evaluation.armor = real_value
-        -- this shouldnt run but it does
+        -- runs displayed armor value changes
     end)
 
 end
@@ -21,6 +21,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudteammate" then
         local Value = math.clamp(data.current / data.total, 0, 1)
         local real_value = math.round((data.total * 10) * Value)
         Evaluation.hp = real_value
+        -- runs when displayed health value changes
     end)
 
 end
@@ -87,10 +88,6 @@ function Evaluation:hpAndArmor()
     end)
 end
 
-function Evaluation:regenerateArmor()
-    dohttpreq("http://localhost:8001/evaluate/regeneratearmor", function(data2)
-    end)
-end
 
 function Evaluation:tased()
     dohttpreq("http://localhost:8001/evaluate/tased", function(data2)
@@ -103,7 +100,17 @@ if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
         dohttpreq("http://localhost:8001/evaluate/restore_hp", function(data2)
         end)
         Evaluation:hpAndArmor()
-        -- this runs after armor regenerateArmor a few times
+        -- this runs after armor regenerateArmor a few times - if you have the perk/skill in the game
+    end)
+end
+
+
+if string.lower(RequiredScript) == "lib/units/beings/player/playerdamage" then
+    Hooks:PostHook(PlayerDamage, "_regenerate_armor", "_regenerate_armor_pain_event", function(self, no_sound)
+        dohttpreq("http://localhost:8001/evaluate/regeneratearmor", function(data2)
+        end)
+
+        -- armor regenerating itself after not being attacked for a few seconds
     end)
 
 end
