@@ -1,0 +1,15 @@
+{"comment": "original visuals, no haptic, (orignal payday)",
+  "shielded": {
+    "visuals": [    ],
+    "sounds": [    ]
+},"unshielded": {
+  "visuals": [],
+  "sounds": []
+},"tased": {
+  "visuals": [],
+  "sounds": []
+},"downed": {
+  "visuals": [  ],
+  "sounds": [  ]
+},"disabledefaultsound" : "false", "disabledefaulthitdirection" : "false", "disablescreenflashes" : "false"
+}

@@ -108,7 +108,7 @@ end
 
 function PainSimulationOptions:GetProfile()
     if PainSimulationOptions._settings.enabled == false then
-        return "Profile0.json"
+        return "Profile-Original.json"
     end
     return PainSimulationOptions.profiles[PainSimulationOptions._settings.feedback_profile]
 end
