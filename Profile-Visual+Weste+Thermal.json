@@ -1,4 +1,4 @@
-{"comment":"super strong visual, strong haptic",
+{"comment":"strong visual, vibration, thermal",
   "shielded": {
     "visuals": [
       {
@@ -22,7 +22,7 @@
     ],
   "haptic": {
     "patterns":  ["Impact1", "Impact2", "Impact3"],
-    "lowerbound": 0.15, "upperbound": 0.3,
+    "lowerbound": 0.7, "upperbound": 0.8,
     "duration": 0.5,
     "rotation": "true"}
   }

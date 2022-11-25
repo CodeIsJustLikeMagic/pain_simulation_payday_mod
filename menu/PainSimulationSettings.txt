@@ -1,1 +1,1 @@
-{"playertag":"tuiew","feedback_profile":1,"enabled":true,"equip_primary_weapon":true}
+{"playertag":"tuiew","feedback_profile":4,"enabled":true,"equip_primary_weapon":true}

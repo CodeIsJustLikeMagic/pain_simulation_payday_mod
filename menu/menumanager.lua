@@ -4,7 +4,7 @@ if not PainSimulationOptions then
     PainSimulationOptions._settings_path = ModPath .. "menu/PainSimulationSettings.txt"
     PainSimulationOptions._menu_path = ModPath .. "menu/menu.txt"
     PainSimulationOptions.profiles = {
-        "Profile0.json", "Profile1.json", "Profile2.json", "Profile3.json", "Profile4.json", "Profile5.json", "Profile6.json", "Profile7.json", "ProfileScare.json"
+        "Profile-Original.json", "Profile-Visual.json", "Profile-Visual+Weste.json", "Profile-Visual+Weste+Thermal.json", "Profile-Visual+Weste+Thermal+Sound.json", "Profile-Custom.json"
     }
     PainSimulationOptions._settings = {
         enabled = true,

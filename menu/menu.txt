@@ -32,15 +32,12 @@
       "description": "pain_simulation_feedback_profile_desc",
       "callback": "callback_pain_simulation_multiple_choice",
       "items" : [
-        "0 !v !h",
-        "1 !v haptic",
-        "2 v h",
-        "3 v+ h"
-        "4 v h noArrows"
-        "5 v h s"
-        "6 v h- s"
-        "7 v !h s"
-        "Jump Scare"
+        "original",
+        "A v",
+        "B v weste",
+        "C v weste thermal"
+        "D v weste thermal auditory"
+        "custom"
       ],
       "value" : "feedback_profile",
     },
