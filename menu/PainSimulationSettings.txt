@@ -1,1 +1,1 @@
-{"playertag":"aadtb","feedback_profile":2,"enabled":true,"equip_primary_weapon":true}
+{"playertag":"lwdwh","feedback_profile":5,"enabled":true,"equip_primary_weapon":true}

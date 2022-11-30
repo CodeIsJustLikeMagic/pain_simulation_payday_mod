@@ -137,7 +137,7 @@ if not Simulation then
     -- disable original
     Simulation.DisableDefaultHitDirection = false
     Simulation.DisableDefaultSound = false
-    Simulation.DisableScreenFlashes = false
+    Simulation.DisableScreenFlashes = true
 
     Simulation.HeistRunning = false
 end
