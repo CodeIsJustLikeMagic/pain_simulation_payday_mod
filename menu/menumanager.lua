@@ -48,6 +48,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_PainSimulation", funct
         for i = 1, length do
             res = res .. string.char(math.random(97,122))
         end
+        log("random name generated : " ..res)
         return res
     end
 
@@ -124,3 +125,7 @@ function PainSimulationOptions:Playertag()
     return PainSimulationOptions._settings.playertag
 end
 
+Hooks:PostHook(MenuManager, "open_menu", "open_menu_pain_simulationn", function(self, menu_name, position, ...)
+    log("Menumanager open_menu")
+    Haptic:stop_feedback() -- stop haptic feedback. This gives players the option to immediately stop feedback, by pressing escape. ethics go brrr
+end)
