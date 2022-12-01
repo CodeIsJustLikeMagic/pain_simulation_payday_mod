@@ -8,6 +8,6 @@ You can load new textures and sounds and use them for damage feedback.
 This Mod calls https://github.com/CodeIsJustLikeMagic/pain_simulation_haptics for haptic feedback.
 
 Set up:
-- install Payday 2 https://store.steampowered.com/app/218620/PAYDAY_2/
-- install SuperBLT https://superblt.znix.xyz/
-- place Pain_Simulation_Payday_mod into Paydays Mods folder (gets created once BaseMod is downloaded)
+- Install Payday 2 https://store.steampowered.com/app/218620/PAYDAY_2/
+- Install SuperBLT https://superblt.znix.xyz/
+- Place Pain_Simulation_Payday_mod into Paydays "mods" folder (gets created once BaseMod is downloaded)
