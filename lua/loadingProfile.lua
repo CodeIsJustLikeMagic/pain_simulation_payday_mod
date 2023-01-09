@@ -273,6 +273,8 @@ for _, file in pairs(file.GetFiles(Simulation._path.. "assets/guis/textures/")) 
 end
 --log("painsimulation successfully loaded texture files")
 
+LocalizationManager:load_localization_file(ModPath .. "localization/en.txt")
+
 -- hapticMessages.lua doesn't have any hooks so it does't get called by the BLTbasemod.
 -- so we have to load and run in ourselves
 if Haptic == nil then
