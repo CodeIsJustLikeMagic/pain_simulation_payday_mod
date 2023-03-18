@@ -5,7 +5,9 @@ Can disable original feedback if desired.
 Specify your own damage feedback in .json file.
 You can load new textures and sounds and use them for damage feedback.
 
-This Mod calls https://github.com/CodeIsJustLikeMagic/pain_simulation_haptics for haptic feedback.
+This Mod calls to a local Server https://github.com/CodeIsJustLikeMagic/pain_simulation_haptics to perform haptic feedback.
+
+--------------------------------------
 
 Set up:
 - Install Payday 2 https://store.steampowered.com/app/218620/PAYDAY_2/
